@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wefiwebu_2/screens/forgot_password_screen.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/signup_screen.dart';
 
@@ -119,7 +120,27 @@ class _SigInScreenState extends State<SigInScreen> {
                 emailField,
                 SizedBox(height: 25),
                 passwordField,
-                SizedBox(height: 35),
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ForgotPassword();
+                          }));
+                        },
+                        child: Text("Forget Password?",
+                            style: TextStyle(
+                                color: Colors.redAccent, fontSize: 15)),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
                 loginButton,
                 SizedBox(height: 15),
                 Row(
