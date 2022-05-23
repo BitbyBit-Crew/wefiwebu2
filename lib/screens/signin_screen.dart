@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wefiwebu_2/Home_btmnavbar_screen.dart';
 import 'package:wefiwebu_2/screens/forgot_password_screen.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/signup_screen.dart';
@@ -181,7 +182,7 @@ class _SigInScreenState extends State<SigInScreen> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeScreen())),
+                      MaterialPageRoute(builder: (context) => HomeBtmNavbar())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
