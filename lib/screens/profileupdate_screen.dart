@@ -1,19 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
-import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
+import 'package:wefiwebu_2/screens/profile_screen.dart';
 import 'package:wefiwebu_2/screens/signin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileUpdateScreen extends StatefulWidget {
+  const ProfileUpdateScreen({Key? key}) : super(key: key);
+
   @override
-  _ProfileScreen createState() => _ProfileScreen();
+  State <ProfileUpdateScreen> createState() => _ProfileUpdateScreen();
 }
 
-class _ProfileScreen extends State<ProfileScreen> {
+class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  bool showPassword = false;
+
   @override
   void initState() {
     super.initState();
@@ -22,12 +26,11 @@ class _ProfileScreen extends State<ProfileScreen> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,18 +113,37 @@ class _ProfileScreen extends State<ProfileScreen> {
                 SizedBox(
                   height: 35,
                 ),
-                Text("Full Name: ${loggedInUser.fullname}"),
-                Text("E-mail: ${loggedInUser.email}"),
-                Text("Matric Number: ${loggedInUser.matric}"),
-                Text("Mobile Number: ${loggedInUser.mobilenum}"),
+                buildTextField("Full Name", "${loggedInUser.fullname}", false),
+                buildTextField("E-mail", "${loggedInUser.email}", false),
+                buildTextField("Matric Number", "${loggedInUser.matric}", false),
+                buildTextField("Mobile Number", "${loggedInUser.mobilenum}", false),
                 SizedBox(
                   height: 35,
                 ),
-                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => ProfileScreen()));
+                      },
+                      child: const Text("CANCEL",
+                          style: TextStyle(
+                              fontSize: 14,
+                              letterSpacing: 2.2,
+                              color: Colors.black)),
+                    ),
+                  ],
+                ),
                 RaisedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => ProfileUpdateScreen()));
+                    builder: (BuildContext context) => ProfileScreen()));
                   },
                   color: Colors.redAccent,
                   padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -129,7 +151,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   child: const Text(
-                    "EDIT",
+                    "SAVE",
                     style: TextStyle(
                         fontSize: 14, letterSpacing: 2.2, color: Colors.white),
                   ),
@@ -140,10 +162,36 @@ class _ProfileScreen extends State<ProfileScreen> {
     );
   }
 
-
-  Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SigInScreen()));
+  Widget buildTextField(
+    String labelText, String placeholder, bool isPasswordTextField) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 35.0),
+      child: TextField(
+        obscureText: isPasswordTextField ? showPassword : false,
+        decoration: InputDecoration(
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                  )
+                : null,
+            contentPadding: EdgeInsets.only(bottom: 3),
+            labelText: labelText,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            )),
+      ),
+    );
   }
 }
