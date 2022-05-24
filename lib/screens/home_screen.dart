@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,19 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 0;
-
-  final List<Widget> screens = [
-    const HomeScreen(), 
-    ProfileScreen(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      currentIndex = index;
-    });
-  }
-
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
@@ -45,24 +34,26 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-      appBar: AppBar(
-        title: Text("Welcome ${loggedInUser.fullname}"),
-        centerTitle: true,
-        backgroundColor: Colors.pinkAccent,
-        actions: <Widget>[
-        IconButton(
-        icon: const Icon(
-          Icons.account_circle_outlined,
-          color: Colors.white,
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              //image setting
+              Image.asset(
+                "assets/images/logo.jpg",
+                fit: BoxFit.contain,
+                width: 100,
+              ),
+              Container(
+                //Text
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Welcome ${loggedInUser.fullname}"),
+              )
+            ],
+          ),
+          backgroundColor: Colors.pinkAccent,
         ),
-        onPressed: () => Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return ProfileScreen();
-        },
-        )),
-      )]
-    ),
-    )
-  );
+      ),
+    );
   }
 }
