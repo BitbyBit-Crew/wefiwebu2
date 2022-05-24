@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreen createState() => _ProfileScreen();
@@ -34,61 +33,58 @@ class _ProfileScreen extends State<ProfileScreen> {
         title: Text("Profile"),
         centerTitle: true,
       ),
-    body: Center(
-      child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const CircleAvatar(
-                  radius: 30,
-                ),
-                
-                SizedBox(height: 45,
-                  child: Text("Fullname: ${loggedInUser.fullname}",
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 30,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                  height: 30,
+                  child: Text(
+                    "Fullname: ${loggedInUser.fullname}",
                     style: const TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500
-                  ),
-                )
-                ),
-
-                SizedBox(height: 45,
-                child:Text("Email Address: ${loggedInUser.email}",
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w500,
-                    )
-                  ),
-                ),
-
-                SizedBox(height: 45,
-                child:Text("Matric Number: ${loggedInUser.matric}",
+                        color: Colors.black54, fontWeight: FontWeight.w500),
+                  )),
+              SizedBox(
+                height: 30,
+                child: Text("Email Address: ${loggedInUser.email}",
                     style: const TextStyle(
                       color: Colors.black54,
                       fontWeight: FontWeight.w500,
-                    )
-                  ),
-                ),
-                
-                SizedBox(height: 45,
-                child:Text("Phone Number:${loggedInUser.mobilenum}",
+                    )),
+              ),
+              SizedBox(
+                height: 30,
+                child: Text("Matric Number: ${loggedInUser.matric}",
                     style: const TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    )
-                  ),
-                ),
-
-                const SizedBox(
-                  height: 15,
-                ),
-                ActionChip(
-                    label: Text("Logout"),
-                    onPressed: () {
-                      logout(context);
-                }),
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ),
+              SizedBox(
+                height: 30,
+                child: Text("Phone Number:${loggedInUser.mobilenum}",
+                    style: const TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ActionChip(
+                  label: Text("Logout"),
+                  onPressed: () {
+                    logout(context);
+                  }),
             ],
           ),
         ),
@@ -96,7 +92,7 @@ class _ProfileScreen extends State<ProfileScreen> {
     );
   }
 
-Future<void> logout(BuildContext context) async {
+  Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => SigInScreen()));
