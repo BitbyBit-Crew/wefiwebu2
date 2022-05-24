@@ -140,7 +140,6 @@ class _ProfileScreen extends State<ProfileScreen> {
     );
   }
 
-
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
