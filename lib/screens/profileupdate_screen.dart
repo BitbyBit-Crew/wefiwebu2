@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
 import 'package:wefiwebu_2/screens/signin_screen.dart';
@@ -10,13 +11,17 @@ class ProfileUpdateScreen extends StatefulWidget {
   const ProfileUpdateScreen({Key? key}) : super(key: key);
 
   @override
-  State <ProfileUpdateScreen> createState() => _ProfileUpdateScreen();
+  State<ProfileUpdateScreen> createState() => _ProfileUpdateScreen();
 }
 
 class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
   bool showPassword = false;
+
+  final _auth = FirebaseAuth.instance;
+  final mobilePhCon = new TextEditingController();
+  final fullNameCon = new TextEditingController();
 
   @override
   void initState() {
@@ -33,6 +38,76 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //Matric Id field
+    final matricfield = TextFormField(
+      readOnly: true,
+      autofocus: false,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.abc),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.matric}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    //Full name field
+    final fullNamefield = TextFormField(
+      autofocus: false,
+      controller: fullNameCon,
+      keyboardType: TextInputType.name,
+      validator: (value) {
+        RegExp regex = new RegExp(r'^.{3,}$');
+        if (value!.isEmpty) {
+          return ("Full Name cannot be Empty");
+        }
+        if (!regex.hasMatch(value)) {
+          return ("Enter a valid name (Min. 3 Character)");
+        }
+        return null;
+      },
+      onSaved: (value) {
+        fullNameCon.text = value!;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.account_circle),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.fullname}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    //update email field
+    final emailfield = TextFormField(
+      readOnly: true,
+      autofocus: false,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.mail),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.email}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    //update phone number
+    final mobilefield = TextFormField(
+      autofocus: false,
+      controller: mobilePhCon,
+      keyboardType: TextInputType.phone,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Your mobile number is required");
+        }
+      },
+      onSaved: (value) {
+        mobilePhCon.text = value!;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.mobile_friendly),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.mobilenum}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pinkAccent,
@@ -49,8 +124,8 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: GestureDetector(
+          padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+          child: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
             },
@@ -84,8 +159,7 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: AssetImage('assets/images/avatar.png')
-                                )),
+                                image: AssetImage('assets/images/avatar.png'))),
                       ),
                       Positioned(
                           bottom: 0,
@@ -100,7 +174,7 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
                                 color:
                                     Theme.of(context).scaffoldBackgroundColor,
                               ),
-                              color: Colors.green,
+                              color: Colors.pinkAccent,
                             ),
                             child: Icon(
                               Icons.edit,
@@ -113,12 +187,16 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
                 SizedBox(
                   height: 35,
                 ),
-                buildTextField("Full Name", "${loggedInUser.fullname}", false),
-                buildTextField("E-mail", "${loggedInUser.email}", false),
-                buildTextField("Matric Number", "${loggedInUser.matric}", false),
-                buildTextField("Mobile Number", "${loggedInUser.mobilenum}", false),
+                SizedBox(height: 45),
+                matricfield,
+                SizedBox(height: 25),
+                fullNamefield,
+                SizedBox(height: 25),
+                mobilefield,
+                SizedBox(height: 25),
+                emailfield,
                 SizedBox(
-                  height: 35,
+                  height: 25,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,7 +208,8 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
                               borderRadius: BorderRadius.circular(20))),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => ProfileScreen()));
+                            builder: (BuildContext context) =>
+                                ProfileScreen()));
                       },
                       child: const Text("CANCEL",
                           style: TextStyle(
@@ -138,32 +217,33 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
                               letterSpacing: 2.2,
                               color: Colors.black)),
                     ),
+                    RaisedButton(
+                      onPressed: () {
+                        postUpdateToFirestore();
+                      },
+                      color: Colors.pinkAccent,
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Text(
+                        "SAVE",
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => ProfileScreen()));
-                  },
-                  color: Colors.redAccent,
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: const Text(
-                    "SAVE",
-                    style: TextStyle(
-                        fontSize: 14, letterSpacing: 2.2, color: Colors.white),
-                  ),
-                ),
               ],
-            )),
-      ),
+            ),
+          )),
     );
   }
 
   Widget buildTextField(
-    String labelText, String placeholder, bool isPasswordTextField) {
+      String labelText, String placeholder, bool isPasswordTextField) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(
@@ -193,5 +273,30 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
             )),
       ),
     );
+  }
+
+  postUpdateToFirestore() async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+
+    UserModel userModel = UserModel();
+
+    // writing all the values
+    userModel.uid = user!.uid;
+    userModel.email = loggedInUser.email;
+    userModel.matric = loggedInUser.matric;
+    userModel.mobilenum = mobilePhCon.text;
+    userModel.fullname = fullNameCon.text;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Profile successfully updated :) ");
+
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => ProfileScreen()),
+        (route) => false);
   }
 }

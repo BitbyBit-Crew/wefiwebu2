@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wefiwebu_2/Home_btmnavbar_screen.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 
@@ -311,7 +312,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => HomeBtmNavbar()),
         (route) => false);
   }
 }

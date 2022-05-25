@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wefiwebu_2/Home_btmnavbar_screen.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
 import 'package:wefiwebu_2/screens/signin_screen.dart';
@@ -14,6 +15,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreen extends State<ProfileScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  
   @override
   void initState() {
     super.initState();
@@ -30,19 +32,69 @@ class _ProfileScreen extends State<ProfileScreen> {
  
   @override
   Widget build(BuildContext context) {
+    //display matric field
+    final matricfield = TextFormField(
+      readOnly: true,
+      autofocus: false,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.abc),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.matric}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    //display Full name field
+    final fullNamefield = TextFormField(
+      readOnly: true,
+      autofocus: false,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.account_circle),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.fullname}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    //display email field
+    final emailfield = TextFormField(
+      readOnly: true,
+      autofocus: false,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.mail),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.email}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    //display phone number
+    final mobilefield = TextFormField(
+      readOnly: true,
+      autofocus: false,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.mobile_friendly),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "${loggedInUser.mobilenum}",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pinkAccent,
         elevation: 1,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => HomeScreen()));
+                builder: (BuildContext context) => HomeBtmNavbar ()));
           },
+        ),
+        title: Text(
+          "Profile",
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
         ),
       ),
       body: Container(
@@ -53,10 +105,6 @@ class _ProfileScreen extends State<ProfileScreen> {
             },
             child: ListView(
               children: [
-                Text(
-                  "Edit Profile",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -97,7 +145,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 color:
                                     Theme.of(context).scaffoldBackgroundColor,
                               ),
-                              color: Colors.green,
+                              color: Colors.pinkAccent,
                             ),
                             child: Icon(
                               Icons.edit,
@@ -108,33 +156,56 @@ class _ProfileScreen extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 35,
+                  height: 25,
                 ),
-                Text("Full Name: ${loggedInUser.fullname}"),
-                Text("E-mail: ${loggedInUser.email}"),
-                Text("Matric Number: ${loggedInUser.matric}"),
-                Text("Mobile Number: ${loggedInUser.mobilenum}"),
-                SizedBox(
-                  height: 35,
-                ),
+                SizedBox(height: 25),
+                matricfield,
+                SizedBox(height: 25),
+                fullNamefield,
+                SizedBox(height: 25),
+                mobilefield,
+                SizedBox(height: 25),
+                emailfield,
+                SizedBox(height: 25,),
                 
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                 RaisedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) => ProfileUpdateScreen()));
                   },
-                  color: Colors.redAccent,
+                  color: Colors.pinkAccent,
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   child: const Text(
-                    "EDIT",
+                    "Edit",
                     style: TextStyle(
                         fontSize: 14, letterSpacing: 2.2, color: Colors.white),
                   ),
                 ),
+
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
+                    onPressed: () {
+                      logout(context);
+                    },
+                    child: const Text("Logout",
+                    style: TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 2.2,
+                      color: Colors.black)),
+                    ),
               ],
+              ),
+            ],    
+               
             )),
       ),
     );
