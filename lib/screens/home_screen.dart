@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
+import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
