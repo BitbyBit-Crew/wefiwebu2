@@ -8,12 +8,9 @@ import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
-<<<<<<< Updated upstream
 import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
-=======
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
->>>>>>> Stashed changes
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

@@ -27,7 +27,6 @@ class _HomeBtmNavbarState extends State<HomeBtmNavbar> {
   static final List<Widget> _screens = <Widget>[
     HomeScreen(),
     MarketplaceScreen(),
-    Addlostitem_screen(),
     MessageScreen(),
     ProfileScreen(),
   ];
