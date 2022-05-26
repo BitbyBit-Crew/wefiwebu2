@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:line_icons/line_icons.dart';
+
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
-import 'package:wefiwebu_2/screens/add_List_screen.dart';
+import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/message_screen.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
@@ -27,7 +27,7 @@ class _HomeBtmNavbarState extends State<HomeBtmNavbar> {
   static final List<Widget> _screens = <Widget>[
     HomeScreen(),
     MarketplaceScreen(),
-    Addlistscreen(),
+    Addlostitem_screen(),
     MessageScreen(),
     ProfileScreen(),
   ];
@@ -61,7 +61,7 @@ class _HomeBtmNavbarState extends State<HomeBtmNavbar> {
                 icon: Icons.store,
                 text: 'Marketplace',
               ),
-              GButton(icon: Icons.add_circle_rounded, text: 'Add'),
+              // GButton(icon: Icons.add_circle_rounded, text: 'Add'),
               GButton(
                 icon: Icons.message_sharp,
                 text: 'Message',
