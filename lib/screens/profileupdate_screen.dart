@@ -217,7 +217,7 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
                               letterSpacing: 2.2,
                               color: Colors.black)),
                     ),
-                    RaisedButton(
+                    MaterialButton(
                       onPressed: () {
                         postUpdateToFirestore();
                       },

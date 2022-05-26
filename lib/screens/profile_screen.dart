@@ -15,7 +15,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreen extends State<ProfileScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-  
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +29,6 @@ class _ProfileScreen extends State<ProfileScreen> {
     });
   }
 
- 
   @override
   Widget build(BuildContext context) {
     //display matric field
@@ -89,7 +88,7 @@ class _ProfileScreen extends State<ProfileScreen> {
           ),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => HomeBtmNavbar ()));
+                builder: (BuildContext context) => HomeBtmNavbar()));
           },
         ),
         title: Text(
@@ -129,8 +128,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: AssetImage('assets/images/avatar.png')
-                                )),
+                                image: AssetImage('assets/images/avatar.png'))),
                       ),
                       Positioned(
                           bottom: 0,
@@ -166,46 +164,48 @@ class _ProfileScreen extends State<ProfileScreen> {
                 mobilefield,
                 SizedBox(height: 25),
                 emailfield,
-                SizedBox(height: 25,),
-                
+                SizedBox(
+                  height: 25,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => ProfileUpdateScreen()));
-                  },
-                  color: Colors.pinkAccent,
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: const Text(
-                    "Edit",
-                    style: TextStyle(
-                        fontSize: 14, letterSpacing: 2.2, color: Colors.white),
-                  ),
-                ),
-
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20))),
-                    onPressed: () {
-                      logout(context);
-                    },
-                    child: const Text("Logout",
-                    style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 2.2,
-                      color: Colors.black)),
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ProfileUpdateScreen()));
+                      },
+                      color: Colors.pinkAccent,
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Text(
+                        "Edit",
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.white),
+                      ),
                     ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      onPressed: () {
+                        logout(context);
+                      },
+                      child: const Text("Logout",
+                          style: TextStyle(
+                              fontSize: 14,
+                              letterSpacing: 2.2,
+                              color: Colors.black)),
+                    ),
+                  ],
+                ),
               ],
-              ),
-            ],    
-               
             )),
       ),
     );
