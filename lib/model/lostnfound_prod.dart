@@ -1,37 +1,78 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:html';
 
-class LostnfoundData {
-  final CollectionReference lostnfoundlist =
-      FirebaseFirestore.instance.collection("lostnfound");
+import 'package:equatable/equatable.dart';
+import 'package:wefiwebu_2/screens/lostnfound_produt_page.dart';
 
-  Future<void> lostnfound(
-    String name,
-    String descrip,
-    String lastlocation,
-    double price,
-    String uid,
-  ) async {
-    return await lostnfoundlist.doc(uid).set({
+class LostnfoundData extends Equatable {
+  final String name;
+  final String descrip;
+  final String lastlocation;
+  final String imgUrl;
+  double price;
+  final int id;
+  int quantity;
+
+  LostnfoundData({
+    required this.id,
+    required this.name,
+    required this.descrip,
+    required this.lastlocation,
+    required this.imgUrl,
+    this.price = 0,
+    this.quantity = 0,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'Prod id': id,
       'Prod name': name,
       'Prod description': descrip,
       'Prod last location': lastlocation,
-      'Reward price': price
-    });
+      'Prod image': imgUrl,
+      'Reward price': price,
+      'quantity': quantity
+    };
   }
 
-  Future getlostnfoundList() async {
-    List itemsList = [];
-    try {
-      await lostnfoundlist.get().then((querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-          itemsList.add(element.data);
-        });
-      });
-      return itemsList;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
+  @override
+  List<Object?> get props {
+    return [id, name, descrip, lastlocation, imgUrl, price, quantity];
   }
+
+  LostnfoundData copyWith({
+    int? id,
+    String? name,
+    String? descrip,
+    String? lastlocation,
+    String? imgUrl,
+    double? price,
+    int? quantity,
+  }) {
+    return LostnfoundData(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        descrip: descrip ?? this.descrip,
+        lastlocation: lastlocation ?? this.lastlocation,
+        imgUrl: imgUrl ?? this.imgUrl,
+        price: price ?? this.price,
+        quantity: quantity ?? this.quantity);
+  }
+
+  factory LostnfoundData.fromMap(Map<String, dynamic> map) {
+    return LostnfoundData(
+        id: map['id'],
+        name: map['Prod name'],
+        descrip: map['Prod description'],
+        lastlocation: map['Prod last location'],
+        imgUrl: map['Prod image'],
+        price: map['Reward price'],
+        quantity: map['quantity']);
+  }
+
+  String toJson() => json.encode(toMap());
+  factory LostnfoundData.fromJson(String source) =>
+      LostnfoundData.fromMap(json.decode(source));
+
+  bool get stringfy => true;
 }

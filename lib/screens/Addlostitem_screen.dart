@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:convert';
+
+import '../service/storage_service.dart';
 
 class Addlostitem_screen extends StatefulWidget {
   @override
@@ -17,6 +20,8 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
 
   @override
   Widget build(BuildContext context) {
+    final Storage storage = Storage();
+
     return Scaffold(
       appBar: new AppBar(
         title: new Text("Add list Page"),
@@ -69,7 +74,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
               ),
               TextFormField(
                 controller: Prwrdprice,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return ("Your reward price is required");
@@ -85,6 +90,46 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
               ),
               SizedBox(
                 height: 20.0,
+              ),
+              // image upload
+              Material(
+                elevation: 2,
+                color: Colors.pinkAccent,
+                borderRadius: BorderRadius.circular(15),
+                child: MaterialButton(
+                  onPressed: () async {
+                    final results = await FilePicker.platform.pickFiles(
+                      allowMultiple: false,
+                      type: FileType.custom,
+                      allowedExtensions: ['png', 'jpg'],
+                    );
+                    if (results == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No file pick'),
+                        ),
+                      );
+                      return null;
+                    }
+                    final path = results.files.single.path!;
+                    final fileName = results.files.single.name;
+
+                    storage
+                        .uploadFile(path, fileName)
+                        .then((value) => print('Done'));
+                  },
+                  child: Text(
+                    'Upload Image',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 15,
               ),
               Material(
                 elevation: 5,
