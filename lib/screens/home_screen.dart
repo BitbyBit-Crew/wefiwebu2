@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,10 +10,12 @@ import 'package:wefiwebu_2/model/user_model.dart';
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
+import 'package:wefiwebu_2/screens/lostnfound_produt_page.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
 import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:wefiwebu_2/screens/searchScreen_lostnfound.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,26 +27,29 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-  final Stream<QuerySnapshot> lostnfProd =
-      FirebaseFirestore.instance.collection("lostnfound").snapshots();
-  // List lnfProdList = [];
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchDatabaseList();
-  // }
+  List lnfProdList = [];
 
-  // fetchDatabaseList() async {
-  //   dynamic result = await LostnfoundData().getlostnfoundList();
-  //   if (result == null) {
-  //     print('unable to retrieve');
-  //   } else {
-  //     setState(() {
-  //       lnfProdList = result;
-  //     });
-  //   }
-  // }
+  fetchlnfProducts() async {
+    var _firestoreInstance = FirebaseFirestore.instance;
+    QuerySnapshot qn = await _firestoreInstance.collection("lostnfound").get();
+    setState(() {
+      for (int i = 0; i < qn.docs.length; i++) {
+        lnfProdList.add({
+          'Prod name': qn.docs[i]['Prod name'],
+          'Prod description': qn.docs[i]['Prod description'],
+          'Prod last location': qn.docs[i]['Prod last location'],
+          'Reward price': qn.docs[i]['Reward price'],
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    fetchlnfProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(5),
         child: Column(
           children: [
             Container(
@@ -78,6 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   TextFormField(
+                    readOnly: true,
+                    onTap: () => Navigator.push(context,
+                        CupertinoPageRoute(builder: (_) => SearchScreen())),
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         hintText: "Search items",
@@ -87,42 +96,48 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Container(
-              height: 485,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: StreamBuilder<QuerySnapshot>(
-                stream: lostnfProd,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Error");
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text("Loading...");
-                  }
-
-                  final data = snapshot.requireData;
-                  return ListView.builder(
-                    itemCount: data.size,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text('${data.docs[index]['Prod name']}'),
-                          subtitle:
-                              Text('${data.docs[index]['Prod description']}'),
-                          leading: CircleAvatar(
-                            child: Image(
-                                image: AssetImage('assets/images/avatar.png')),
+            SizedBox(
+              height: 15,
+            ),
+            Expanded(
+                child: GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: lnfProdList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, childAspectRatio: 1),
+                    itemBuilder: (_, index) {
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    LnfProductPage(lnfProdList[index]))),
+                        child: Card(
+                          elevation: 3,
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 2,
+                                child: Container(
+                                  color: Colors.grey,
+                                  child: Image.asset(
+                                    "assets/images/avatar.png",
+                                    width: 80,
+                                    height: 80,
+                                  ),
+                                ),
+                              ),
+                              Text("${lnfProdList[index]['Prod name']}"),
+                              Text("${lnfProdList[index]['Prod description']}"),
+                              Text(
+                                  "${lnfProdList[index]['Prod last location']}"),
+                              Text(
+                                  "${lnfProdList[index]['Reward price'].toString()}")
+                            ],
                           ),
-                          trailing:
-                              Text('RM ${data.docs[index]['Reward price']}'),
                         ),
                       );
-                    },
-                  );
-                },
-              ),
-            )
+                    }))
           ],
         ),
       ),
