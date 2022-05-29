@@ -8,7 +8,29 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  List lnfProdList = [];
   var inputText = "";
+
+  fetchlnfProducts() async {
+    var _firestoreInstance = FirebaseFirestore.instance;
+    QuerySnapshot qn = await _firestoreInstance.collection("lostnfound").get();
+    setState(() {
+      for (int i = 0; i < qn.docs.length; i++) {
+        lnfProdList.add({
+          'Prod name': qn.docs[i]['Prod name'],
+          'Prod description': qn.docs[i]['Prod description'],
+          'Prod last location': qn.docs[i]['Prod last location'],
+          'Reward price': qn.docs[i]['Reward price'],
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    fetchlnfProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +72,16 @@ class _SearchScreenState extends State<SearchScreen> {
                           snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data =
                             document.data() as Map<String, dynamic>;
-                        return Card(
-                          elevation: 5,
-                          child: ListTile(
-                            title: Text(data['Prod name']),
-                            leading: CircleAvatar(
-                                child: Image.asset("assets/images/avatar.png")),
+
+                        return GestureDetector(
+                          child: Card(
+                            elevation: 5,
+                            child: ListTile(
+                              title: Text(data['Prod name']),
+                              leading: CircleAvatar(
+                                  child:
+                                      Image.asset("assets/images/avatar.png")),
+                            ),
                           ),
                         );
                       }).toList(),
