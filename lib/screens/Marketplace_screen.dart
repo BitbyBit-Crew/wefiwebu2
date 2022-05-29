@@ -31,7 +31,7 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
           AssetImage('assets/images/carousel3.jpg'),
           AssetImage('assets/images/carousel4.jpg'),
         ],
-        autoplay: false,
+        autoplay: true,
         animationCurve: Curves.fastOutSlowIn,
         animationDuration: Duration(milliseconds: 1000),
       ),
@@ -76,7 +76,7 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
             child: new Text('Recent Products'),
           ),
 
-          //Container
+          // Container
           Container(height: 320.0, child: Products()),
         ],
       ),

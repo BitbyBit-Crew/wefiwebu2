@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wefiwebu_2/screens/product_details.dart';
-import 'package:wefiwebu_2/screens/product_details.dart';
 
 class Products extends StatefulWidget {
   @override

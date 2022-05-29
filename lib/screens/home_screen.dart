@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -96,6 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
+            //list
+
             SizedBox(
               height: 15,
             ),
@@ -128,11 +132,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               Text("${lnfProdList[index]['Prod name']}"),
-                              Text("${lnfProdList[index]['Prod description']}"),
+                              // Text("${lnfProdList[index]['Prod description']}"),
                               Text(
                                   "${lnfProdList[index]['Prod last location']}"),
                               Text(
-                                  "${lnfProdList[index]['Reward price'].toString()}")
+                                  "RM${lnfProdList[index]['Reward price'].toString()}")
                             ],
                           ),
                         ),
