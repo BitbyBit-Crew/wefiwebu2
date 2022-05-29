@@ -16,6 +16,8 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
   TextEditingController Pdescrip = new TextEditingController();
   TextEditingController Plocat = new TextEditingController();
   TextEditingController Prwrdprice = new TextEditingController();
+  String lnfProdId = DateTime.now().microsecondsSinceEpoch.toString();
+  bool upload = false;
 
   @override
   Widget build(BuildContext context) {
@@ -96,27 +98,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 color: Colors.pinkAccent,
                 borderRadius: BorderRadius.circular(15),
                 child: MaterialButton(
-                  onPressed: () async {
-                    final results = await FilePicker.platform.pickFiles(
-                      allowMultiple: false,
-                      type: FileType.custom,
-                      allowedExtensions: ['png', 'jpg'],
-                    );
-                    if (results == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('No file pick'),
-                        ),
-                      );
-                      return null;
-                    }
-                    final path = results.files.single.path!;
-                    final fileName = results.files.single.name;
-
-                    storage
-                        .uploadFile(path, fileName)
-                        .then((value) => print('Done'));
-                  },
+                  onPressed: () async {},
                   child: Text(
                     'Upload Image',
                     textAlign: TextAlign.center,
@@ -138,19 +120,19 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                     padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: () {
-                      Map<String, dynamic> data = {
-                        "Prod name": Pname.text,
-                        "Prod description": Pdescrip.text,
-                        "Prod last location": Plocat.text,
-                        "Reward price": Prwrdprice.text
-                      };
-                      FirebaseFirestore.instance
-                          .collection("lostnfound")
-                          .add(data);
-                      Pname.clear();
-                      Pdescrip.clear();
-                      Plocat.clear();
-                      Prwrdprice.clear();
+                      // Map<String, dynamic> data = {
+                      //   "Prod name": Pname.text,
+                      //   "Prod description": Pdescrip.text,
+                      //   "Prod last location": Plocat.text,
+                      //   "Reward price": Prwrdprice.text
+                      // };
+                      // FirebaseFirestore.instance
+                      //     .collection("lostnfound")
+                      //     .add(data);
+                      // Pname.clear();
+                      // Pdescrip.clear();
+                      // Plocat.clear();
+                      // Prwrdprice.clear();
                       showDialog(
                           context: context,
                           builder: (context) {
