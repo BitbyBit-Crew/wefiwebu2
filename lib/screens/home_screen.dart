@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-              height: 500,
+              height: 485,
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: StreamBuilder<QuerySnapshot>(
                 stream: lostnfProd,
@@ -114,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Image(
                                 image: AssetImage('assets/images/avatar.png')),
                           ),
-                          trailing: Text('${data.docs[index]['Reward price']}'),
+                          trailing:
+                              Text('RM ${data.docs[index]['Reward price']}'),
                         ),
                       );
                     },
