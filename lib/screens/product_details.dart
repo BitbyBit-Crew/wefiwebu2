@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefiwebu_2/screens/checkout_screen.dart';
 
 class ProductDetails extends StatefulWidget {
   // ProductDetails({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         ],
       ),
       body: new ListView(
-        children: <Widget>[
+        children: <Widget>[ 
           new Container(
             height: 300.0,
             child: GridTile(
@@ -104,7 +105,12 @@ class _ProductDetailsState extends State<ProductDetails> {
               //second button
               Expanded(
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (context) => Checkout(
+                          product_name: widget.product_detail_name,
+                          product_picture: widget.product_detail_picture,
+                          product_price: widget.product_detail_price,
+                   ))),
                   color: Colors.red,
                   textColor: Colors.white,
                   elevation: 0.2,
@@ -130,7 +136,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             subtitle: new Text(
                 "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
           ),
-          Divider(),
+          const Divider(),
           new Row(
             children: <Widget>[
               Padding(

@@ -10,7 +10,6 @@ import 'package:wefiwebu_2/model/user_model.dart';
 
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
-import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
 import 'package:wefiwebu_2/screens/lostnfound_product_page.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
 import 'package:wefiwebu_2/screens/profileupdate_screen.dart';

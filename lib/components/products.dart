@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'package:flutter/material.dart';
 import 'package:wefiwebu_2/screens/product_details.dart';
 
@@ -40,7 +42,7 @@ class Single_prod extends StatelessWidget {
   final prod_picture;
   final prod_price;
 
-  Single_prod({
+  const Single_prod({
     required this.prod_name,
     required this.prod_picture,
     required this.prod_price,
@@ -60,7 +62,7 @@ class Single_prod extends StatelessWidget {
                       product_detail_picture: prod_picture,
                       product_detail_price: prod_price,
                     ))),
-            child: GridTile(
+            child: GridTile( 
                 footer: Container(
                   color: Colors.white70,
                   child: ListTile(
