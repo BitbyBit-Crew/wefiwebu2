@@ -10,17 +10,12 @@ class Checkout extends StatefulWidget {
   final product_name;
   // final product_picture;
   final product_price;
-  final product_condition;
-  final product_brand;
-  
 
-  Checkout({
+
+  const Checkout({
     required this.product_name,
     // required this.product_picture,
     required this.product_price,
-    required this.product_condition,
-    required this.product_brand,
-    commentsCon,
   });
 }
 

@@ -129,6 +129,21 @@ class _PlaceOrderState extends State<PlaceOrder> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(  
+                padding: const EdgeInsets.all(20.0),
+                elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
+                    onPressed: () {
+                      cancel(context);
+                    },
+                    child: const Text("Cancel",
+                      style: TextStyle(
+                        fontSize: 14,
+                        letterSpacing: 2.2,
+                        color: Colors.black)),
+              ),
               MaterialButton(
                 onPressed: () {
                   confirm(context);
@@ -172,5 +187,10 @@ class _PlaceOrderState extends State<PlaceOrder> {
         );
       },
     );
+  }
+
+    Future<void> cancel(BuildContext context) async {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Marketplace_Screen()));
   }
 }

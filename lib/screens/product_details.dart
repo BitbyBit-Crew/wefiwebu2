@@ -135,10 +135,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   borderRadius: BorderRadius.circular(50))),
                   onPressed: () => Navigator.of(context).push(new MaterialPageRoute(
                     builder: (context) => Checkout(
-                          product_name: widget.marketproduct['Product Name'],
-                          product_condition: widget.marketproduct['Product Condition'],
-                          product_price: widget.marketproduct['Product Price'],
-                          product_brand: widget.marketproduct['Product Brand']
+                      product_name: widget.marketproduct['Product Name'],
+                      product_price: widget.marketproduct['Product Price'],
                    ))),
                   child: const Text("Buy Now",
                   style: TextStyle(
