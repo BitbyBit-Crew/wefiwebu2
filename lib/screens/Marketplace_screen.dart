@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/components/horizontal.dart';
@@ -58,18 +58,18 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
   Widget build(BuildContext context) {
     Widget image_carousel = new Container(
       height: 200.0,
-      child: new Carousel(
-        boxFit: BoxFit.cover,
-        images: [
-          AssetImage('assets/images/carousel1.jpg'),
-          AssetImage('assets/images/carousel2.jpg'),
-          AssetImage('assets/images/carousel3.jpg'),
-          AssetImage('assets/images/carousel4.jpg'),
-        ],
-        autoplay: true,
-        animationCurve: Curves.fastOutSlowIn,
-        animationDuration: Duration(milliseconds: 1000),
-      ),
+      // child: new Carousel(
+      //   boxFit: BoxFit.cover,
+      //   images: [
+      //     AssetImage('assets/images/carousel1.jpg'),
+      //     AssetImage('assets/images/carousel2.jpg'),
+      //     AssetImage('assets/images/carousel3.jpg'),
+      //     AssetImage('assets/images/carousel4.jpg'),
+      //   ],
+      //   autoplay: true,
+      //   animationCurve: Curves.fastOutSlowIn,
+      //   animationDuration: Duration(milliseconds: 1000),
+      // ),
     );
 
     return Scaffold(

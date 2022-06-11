@@ -50,7 +50,7 @@ class MarketProduct extends Equatable {
         MPdesc: MPdesc ?? this.MPdesc,
         MPcond: MPcond ?? this.MPcond,
         MPbrand: MPbrand ?? this.MPbrand,
-        MPprice: MPprice ?? this.MPprice);
+        MPprice: price ?? MPprice);
   }
 
   factory MarketProduct.fromSnapShot(DocumentSnapshot snap) {
