@@ -1,27 +1,29 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
 import '../service/storage_service.dart';
 
-class Addlostitem_screen extends StatefulWidget {
+class Addmarketproduct_screen extends StatefulWidget {
   @override
-  State<Addlostitem_screen> createState() => _Addlostitem_screen();
+  State<Addmarketproduct_screen> createState() =>
+      _Addmarketproduct_screenState();
 }
 
-class _Addlostitem_screen extends State<Addlostitem_screen> {
-  TextEditingController Pname = new TextEditingController();
-  TextEditingController Pdescrip = new TextEditingController();
-  TextEditingController Plocat = new TextEditingController();
-  TextEditingController Prwrdprice = new TextEditingController();
-  String lnfProdId = DateTime.now().microsecondsSinceEpoch.toString();
+class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
+  TextEditingController MPname = new TextEditingController();
+  TextEditingController MPdesc = new TextEditingController();
+  TextEditingController MPcond = new TextEditingController();
+  TextEditingController MPbrand = new TextEditingController();
+  TextEditingController MPprice = new TextEditingController();
+  String marketproductId = DateTime.now().microsecondsSinceEpoch.toString();
   bool upload = false;
 
   @override
   Widget build(BuildContext context) {
-    final Storage storage = Storage();
+    final Storage mpStorage = Storage();
 
     return Scaffold(
       appBar: new AppBar(
@@ -35,7 +37,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
           child: Column(
             children: [
               TextFormField(
-                controller: Pname,
+                controller: MPname,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.abc_sharp),
@@ -48,7 +50,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 height: 20.0,
               ),
               TextFormField(
-                controller: Pdescrip,
+                controller: MPdesc,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.description),
@@ -61,11 +63,11 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 height: 20.0,
               ),
               TextFormField(
-                controller: Plocat,
+                controller: MPcond,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.maps_home_work),
-                    hintText: "Last Location",
+                    hintText: "Product Condition",
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
@@ -74,17 +76,30 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 height: 20.0,
               ),
               TextFormField(
-                controller: Prwrdprice,
+                controller: MPbrand,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.maps_home_work),
+                    hintText: "Product Brand",
+                    contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              TextFormField(
+                controller: MPprice,
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return ("Your reward price is required");
+                    return ("Product price is required");
                   }
                 },
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.money),
-                    hintText: "Reward Price",
+                    hintText: "Product Price",
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
@@ -121,23 +136,25 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: () {
                       Map<String, dynamic> data = {
-                        "Prod name": Pname.text,
-                        "Prod description": Pdescrip.text,
-                        "Prod last location": Plocat.text,
-                        "Reward price": Prwrdprice.text
+                        "Product Name": MPname.text,
+                        "Product Description": MPdesc.text,
+                        "Product Condition": MPcond.text,
+                        "Product Brand": MPbrand.text,
+                        "Product Price": MPprice.text
                       };
                       FirebaseFirestore.instance
-                          .collection("lostnfound")
+                          .collection("marketplace")
                           .add(data);
-                      Pname.clear();
-                      Pdescrip.clear();
-                      Plocat.clear();
-                      Prwrdprice.clear();
+                      MPname.clear();
+                      MPdesc.clear();
+                      MPcond.clear();
+                      MPbrand.clear();
+                      MPprice.clear();
                       showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              content: Text('Product Submitted'),
+                              content: Text('Product Added to Marketplace'),
                             );
                           });
                     },

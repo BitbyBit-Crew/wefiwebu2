@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:wefiwebu_2/components/Products.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/components/horizontal.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wefiwebu_2/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wefiwebu_2/screens/product_details.dart';
+import 'package:wefiwebu_2/screens/addmarketproduct_screen.dart';
+import 'package:wefiwebu_2/model/marketplace_prod.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -19,6 +27,33 @@ class Marketplace_Screen extends StatefulWidget {
 }
 
 class _Marketplace_ScreenState extends State<Marketplace_Screen> {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+  List marketProdList = [];
+
+  fetchmarketProducts() async {
+    var _firestoreInstance = FirebaseFirestore.instance;
+    QuerySnapshot mp = await _firestoreInstance.collection("marketplace").get();
+    setState(() {
+      for (int i = 0; i < mp.docs.length; i++) {
+        marketProdList.add({
+          'Product Name': mp.docs[i]['Product Name'],
+          'Product Description': mp.docs[i]['Product Description'],
+          'Product Condition': mp.docs[i]['Product Condition'],
+          'Product Price': mp.docs[i]['Product Price'],
+          'Product Brand': mp.docs[i]['Product Brand'],
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    fetchmarketProducts();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget image_carousel = new Container(
@@ -57,29 +92,100 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
               onPressed: () {})
         ],
       ),
-      body: new ListView(
-        children: <Widget>[
-          //image carousel pics
-          image_carousel,
-          //padding widget
-          new Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: new Text('Categories'),
-          ),
-
-          //horizontal list view
-          HorizontalList(),
-
-          //padding widget
-          new Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: new Text('Recent Products'),
-          ),
-
-          // Container
-          Container(height: 320.0, child: Products()),
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(5.0),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              child: Column(
+                children: [
+                  TextFormField(
+                    readOnly: true,
+                    // onTap: () => Navigator.push(context,
+                    //     CupertinoPageRoute(builder: (_) => SearchScreen())),
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: "Search items",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Expanded(
+                child: GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: marketProdList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, childAspectRatio: 1),
+                    itemBuilder: (_, index) {
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    ProductDetails(marketProdList[index]))),
+                        child: Card(
+                          elevation: 3,
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 2,
+                                child: Container(
+                                  color: Colors.grey,
+                                  child: Image.asset(
+                                    "assets/images/avatar.png",
+                                    width: 80,
+                                    height: 80,
+                                  ),
+                                ),
+                              ),
+                              Text("${marketProdList[index]['Product Name']}"),
+                              Text(
+                                  "${marketProdList[index]['Product Description']}"),
+                              Text(
+                                  "${marketProdList[index]['Product Condition']}"),
+                              Text("${marketProdList[index]['Product Brand']}"),
+                              Text(
+                                  "RM${marketProdList[index]['Product Price']}")
+                            ],
+                          ),
+                        ),
+                      );
+                    })),
+          ],
+        ),
       ),
+      floatingActionButton:
+          SpeedDial(icon: Icons.add, backgroundColor: Colors.black, children: [
+        SpeedDialChild(
+          child: const Icon(Icons.approval),
+          label: 'Sell a Product',
+          backgroundColor: Colors.grey,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Addmarketproduct_screen()),
+            );
+          },
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.account_balance_wallet),
+          label: 'Sell',
+          backgroundColor: Colors.grey,
+          // onTap: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => Admin()),
+          //   );
+          // },
+        ),
+      ]),
     );
   }
 }

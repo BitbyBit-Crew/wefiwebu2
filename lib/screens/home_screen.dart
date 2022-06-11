@@ -7,9 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wefiwebu_2/model/lostnfound_prod.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
-
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
-import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
 import 'package:wefiwebu_2/screens/lostnfound_product_page.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
@@ -135,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // Text("${lnfProdList[index]['Prod description']}"),
                               Text(
                                   "${lnfProdList[index]['Prod last location']}"),
-                              Text("${lnfProdList[index]['Reward price']}")
+                              Text("RM${lnfProdList[index]['Reward price']}")
                             ],
                           ),
                         ),
@@ -161,7 +159,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Icon(Icons.account_balance_wallet),
           label: 'Sell',
           backgroundColor: Colors.grey,
-          // onTap: () {TBD},
+          // onTap: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => Admin()),
+          //   );
+          // },
         ),
       ]),
     ));
