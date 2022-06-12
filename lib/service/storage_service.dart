@@ -8,17 +8,13 @@ class Storage {
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
-  Future<void> uploadFile(XFile filename) async {
+  Future<void> uploadFile(String filepath, String fileName) async {
+    File file = File(filepath);
+
     try {
-      await storage.ref('lostnfound/$filename').putFile(File(filename.path));
+      await storage.ref('lostnfound/$fileName').putFile(file);
     } on firebase_core.FirebaseException catch (e) {
       print(e);
-    }
-
-    Future<String> getDownload(String imageName) async {
-      String dowloadURL =
-          await storage.ref("lostnfound/$imageName").getDownloadURL();
-      return dowloadURL;
     }
   }
 }

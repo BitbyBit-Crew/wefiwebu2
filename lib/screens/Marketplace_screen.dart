@@ -11,6 +11,7 @@ import 'package:wefiwebu_2/screens/product_details.dart';
 import 'package:wefiwebu_2/screens/addmarketproduct_screen.dart';
 import 'package:wefiwebu_2/model/marketplace_prod.dart';
 import 'package:flutter/rendering.dart';
+import 'package:wefiwebu_2/screens/searchScreen_marketplace.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -102,8 +103,10 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                 children: [
                   TextFormField(
                     readOnly: true,
-                    // onTap: () => Navigator.push(context,
-                    //     CupertinoPageRoute(builder: (_) => SearchScreen())),
+                    onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (_) => SearchScreenMarket())),
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         hintText: "Search items",
@@ -113,6 +116,28 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                 ],
               ),
             ),
+            // Container(
+            //   height: 30,
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         "Categories",
+            //         style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // Container(
+            //   height: 60,
+            //   child: Row(
+            //     children: [
+            //       CircleAvatar(
+            //         maxRadius: 45,
+            //         backgroundColor: Colors.lime,
+            //       )
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 15,
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:wefiwebu_2/screens/checkout_screen.dart';
 
 class ProductDetails extends StatefulWidget {
   var marketproduct;
@@ -99,6 +100,13 @@ class _ProductDetailsState extends State<ProductDetails> {
               )
             ],
           ),
+
+          TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Message to the Seller. Pick Up point/time/etc..',
+          ),
+        ),
           SizedBox(
             height: 40,
           ),
@@ -119,7 +127,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                   iconSize: 50,
                   onPressed: () {},
                 ),
-              ],
+                
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50))),
+                  onPressed: () => Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (context) => Checkout(
+                      product_name: widget.marketproduct['Product Name'],
+                      product_price: widget.marketproduct['Product Price'],
+                   ))),
+                  child: const Text("Buy Now",
+                  style: TextStyle(
+                  fontSize: 18,
+                  letterSpacing: 2.2,
+                  color: Colors.white)),
+                    ),
+              ]
             ),
           ),
         ],
