@@ -130,19 +130,17 @@ class _PlaceOrderState extends State<PlaceOrder> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               OutlinedButton(
-                style: OutlinedButton.styleFrom(  
-                padding: const EdgeInsets.all(20.0),
-                elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20))),
-                    onPressed: () {
-                      cancel(context);
-                    },
-                    child: const Text("Cancel",
-                      style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 2.2,
-                        color: Colors.black)),
+                style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.all(20.0),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+                onPressed: () {
+                  cancel(context);
+                },
+                child: const Text("Cancel",
+                    style: TextStyle(
+                        fontSize: 14, letterSpacing: 2.2, color: Colors.black)),
               ),
               MaterialButton(
                 onPressed: () {
@@ -171,13 +169,13 @@ class _PlaceOrderState extends State<PlaceOrder> {
           title: new Text("Chat Seller?"),
           //content: new Text("You are awesome!"),
           actions: <Widget>[
-            new FlatButton(
+            MaterialButton(
               child: new Text("Yes"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            new FlatButton(
+            MaterialButton(
               child: new Text("No"),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -189,7 +187,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
     );
   }
 
-    Future<void> cancel(BuildContext context) async {
+  Future<void> cancel(BuildContext context) async {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => Marketplace_Screen()));
   }

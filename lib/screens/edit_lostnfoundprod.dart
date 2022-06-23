@@ -3,15 +3,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:wefiwebu_2/model/lostnfound_prod.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
 
-class Addlostitem_screen extends StatefulWidget {
+class Editlostitem_screen extends StatefulWidget {
+  final lnfproduct;
+  Editlostitem_screen(this.lnfproduct);
   @override
-  State<Addlostitem_screen> createState() => _Addlostitem_screen();
+  State<Editlostitem_screen> createState() => _Addlostitem_screen();
 }
 
-class _Addlostitem_screen extends State<Addlostitem_screen> {
+class _Addlostitem_screen extends State<Editlostitem_screen> {
   TextEditingController Pname = new TextEditingController();
   TextEditingController Pdescrip = new TextEditingController();
   TextEditingController Plocat = new TextEditingController();
@@ -20,11 +23,20 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text("Add Lost or Found "),
-        centerTitle: true,
-        backgroundColor: Colors.pinkAccent,
-      ),
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundColor: Colors.pinkAccent,
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.arrow_back_ios_new_rounded),
+                color: Colors.white,
+              ),
+            ),
+          )),
       body: Container(
         padding: EdgeInsets.all(40),
         child: Center(
@@ -35,7 +47,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.abc_sharp),
-                    hintText: "Product Name",
+                    labelText: "${widget.lnfproduct['Prod name']}",
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
@@ -49,7 +61,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.description),
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                    hintText: "Product Description",
+                    labelText: "${widget.lnfproduct['Prod description']}",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
               ),
@@ -61,7 +73,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.maps_home_work),
-                    hintText: "Last Location",
+                    labelText: "${widget.lnfproduct['Prod last location']}",
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
@@ -80,7 +92,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.money),
-                    hintText: "Reward Price",
+                    labelText: "${widget.lnfproduct['Reward price']}",
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
@@ -116,28 +128,25 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                     padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: () {
-                      final lnfprod = LostnfoundData(
-                          name: Pname.text,
-                          descrip: Pdescrip.text,
-                          lastlocation: Plocat.text,
-                          price: double.parse(Prwrdprice.text),
-                          owner: UserModel().uid.toString());
+                      // final prod = LostnfoundData(
+                      //     name: Pname.text,
+                      //     descrip: Pdescrip.text,
+                      //     lastlocation: Plocat.text,
+                      //     price: double.parse(Prwrdprice.text),
+                      //     owner: UserModel().uid.toString());
 
-                      addlnfprod(lnfprod);
-                      Pname.clear();
-                      Pdescrip.clear();
-                      Plocat.clear();
-                      Prwrdprice.clear();
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: Text('Product Submitted'),
-                            );
-                          });
+                      // updatelnfprod(prod);
+
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (context) {
+                      //       return AlertDialog(
+                      //         content: Text('Product Updatted'),
+                      //       );
+                      //     });
                     },
                     child: Text(
-                      "Submit",
+                      "Update",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 15,
