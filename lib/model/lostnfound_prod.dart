@@ -1,90 +1,58 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 class LostnfoundData {
-  String? name;
-  int? createdAt;
-  String? descrip;
-  String? lastlocation;
-  String? imgUrl;
-  double? price;
-  String? categid;
-  int? quantity;
+  final String name;
+  String createdId;
+  final String descrip;
+  final String lastlocation;
+  // final String imgUrl;
+  final double price;
+  // final String categid;
+  // final int quantity;
+  final String owner;
 
   LostnfoundData({
-    this.name = "",
-    this.createdAt = 0,
-    this.descrip = "",
-    this.lastlocation = "",
-    this.imgUrl = "",
-    this.price = 0,
-    this.categid = "",
-    this.quantity = 0,
+    required this.name,
+    this.createdId = '',
+    required this.descrip,
+    required this.lastlocation,
+    // required this.imgUrl,
+    required this.price,
+    // required this.categid,
+    // required this.quantity,
+    required this.owner,
   });
 
-  LostnfoundData.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    createdAt = json['createdAt'];
-    descrip = json['descrip'];
-    lastlocation = json['lastlocation'];
-    imgUrl = json['imgUrl'];
-    price = json['price'];
-    categid = json['categid'];
-    quantity = json['quantity'];
-  }
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     // 'Prod id': id,
-  //     'Prod name': name,
-  //     'Prod description': descrip,
-  //     'Prod last location': lastlocation,
-  //     // 'Prod image': imgUrl,
-  //     'Reward price': price,
-  //     // 'quantity': quantity
-  //   };
-  // }
+  Map<String, dynamic> toJson() => {
+        'id': createdId,
+        'Prod name': name,
+        'Prod description': descrip,
+        'Prod last location': lastlocation,
+        'Reward price': price,
+        'owner': owner,
+      };
 
-  // @override
-  // List<Object?> get props {
-  //   return [
-  //     name,
-  //     descrip,
-  //     lastlocation,
-  //     price,
-  //   ];
-  // }
+  static LostnfoundData fromJson(Map<String, dynamic> json) => LostnfoundData(
+      name: json['Prod name'],
+      descrip: json['Prod description'],
+      lastlocation: json['Prod last location'],
+      price: json['Reward price'],
+      owner: json['owner']);
+}
 
-  // LostnfoundData copyWith({
-  //   int? id,
-  //   String? name,
-  //   String? descrip,
-  //   String? lastlocation,
-  //   String? imgUrl,
-  //   double? price,
-  //   int? quantity,
-  // }) {
-  //   return LostnfoundData(
-  //       // id: id ?? this.id,
-  //       name: name ?? this.name,
-  //       descrip: descrip ?? this.descrip,
-  //       lastlocation: lastlocation ?? this.lastlocation,
-  //       // imgUrl: imgUrl ?? this.imgUrl,
-  //       price: price ?? this.price);
-  //   // quantity: quantity ?? this.quantity);
-  // }
+Future addlnfprod(LostnfoundData lnfprod) async {
+  final lnfdoc = FirebaseFirestore.instance.collection('lostnfound').doc();
+  lnfprod.createdId = lnfdoc.id;
 
-  // factory LostnfoundData.fromSnapShot(DocumentSnapshot snap) {
-  //   return LostnfoundData(
-  //     // id: snap['id'],
-  //     name: snap['Prod name'],
-  //     descrip: snap['Prod description'],
-  //     lastlocation: snap['Prod last location'],
-  //     // imgUrl: snap['Prod image'],
-  //     price: snap['Reward price'],
-  //     // quantity: snap['quantity']
-  //   );
-  // }
+  final json = lnfprod.toJson();
+  await lnfdoc.set(json);
+}
 
-  // String toJson() => json.encode(toMap());
+Future updatelnfprod(LostnfoundData lnfprod) async {
+  final updatelnf = FirebaseFirestore.instance.collection('lostnfound').doc();
+  lnfprod.createdId = updatelnf.id;
 
-  // bool get stringfy => true;
-
-  // static List<LostnfoundData> lnfproduct = [];
+  final json = lnfprod.toJson();
+  await updatelnf.set(json);
 }

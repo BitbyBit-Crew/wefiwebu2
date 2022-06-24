@@ -6,9 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wefiwebu_2/model/lostnfound_prod.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
-import 'package:wefiwebu_2/screens/Manage_lostnfound.dart';
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
+import 'package:wefiwebu_2/screens/edit_lostnfoundprod.dart';
+import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/lostnfound_product_page.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
 import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
@@ -18,14 +19,14 @@ import 'package:wefiwebu_2/screens/searchScreen_lostnfound.dart';
 
 import '../screens/lostnfound_product_page.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class ManagelostnfoundScreen extends StatefulWidget {
+  const ManagelostnfoundScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ManagelostnfoundScreen> createState() => _ManagelostnfoundScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ManagelostnfoundScreenState extends State<ManagelostnfoundScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
@@ -33,7 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   fetchlnfProducts() async {
     var _firestoreInstance = FirebaseFirestore.instance;
-    QuerySnapshot qn = await _firestoreInstance.collection("lostnfound").get();
+    QuerySnapshot qn = await _firestoreInstance
+        .collection("lostnfound")
+        .where('owner', isEqualTo: loggedInUser.uid.toString())
+        .get();
     setState(() {
       for (int i = 0; i < qn.docs.length; i++) {
         lnfProdList.add({
@@ -57,24 +61,34 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => HomeScreen()));
+          },
+        ),
         title: Text(
-          'HomePage',
+          'Manage Lost & Found',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.pinkAccent,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.favorite_border),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.notifications),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.favorite_border),
+        //     color: Colors.white,
+        //     onPressed: () {},
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.notifications),
+        //     color: Colors.white,
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       body: Padding(
         padding: EdgeInsets.all(5),
@@ -115,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) =>
-                                    LnfProductPage(lnfProdList[index]))),
+                                    Editlostitem_screen(lnfProdList[index]))),
                         child: Card(
                           elevation: 3,
                           child: Column(
@@ -127,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Image.asset(
                                     "assets/images/avatar.png",
                                     width: 80,
-                                    height: 60,
+                                    height: 80,
                                   ),
                                 ),
                               ),
@@ -154,17 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Addlostitem_screen()),
-            );
-          },
-        ),
-        SpeedDialChild(
-          child: const Icon(Icons.account_balance_wallet),
-          label: 'Manage Lost & Found',
-          backgroundColor: Colors.grey,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ManagelostnfoundScreen()),
             );
           },
         ),
