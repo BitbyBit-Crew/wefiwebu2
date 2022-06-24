@@ -170,11 +170,11 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                                 ),
                               ),
                               Text("${marketProdList[index]['Product Name']}"),
-                              Text(
-                                  "${marketProdList[index]['Product Description']}"),
-                              Text(
-                                  "${marketProdList[index]['Product Condition']}"),
-                              Text("${marketProdList[index]['Product Brand']}"),
+                              // Text(
+                              //     "${marketProdList[index]['Product Description']}"),
+                              // Text(
+                              //     "${marketProdList[index]['Product Condition']}"),
+                              // Text("${marketProdList[index]['Product Brand']}"),
                               Text(
                                   "RM${marketProdList[index]['Product Price']}")
                             ],
