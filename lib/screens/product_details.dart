@@ -49,7 +49,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             child: GridTile(
               child: Container(
                 color: Colors.white,
-                child: Image.asset("assets/images/blazer.png"),
+                child: Image.asset("assets/images/avatar.png"),
               ),
               footer: Container(
                   color: Colors.white70,
@@ -62,8 +62,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     title: Row(
                       children: <Widget>[
                         Expanded(
-                            child: Text(
-                          widget.marketproduct['Product Price'],
+                            child: new Text(
+                          "\RM${widget.marketproduct['Product Price']}",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
                         )),
@@ -122,28 +122,27 @@ class _ProductDetailsState extends State<ProductDetails> {
           Container(
             color: Colors.pinkAccent.shade400,
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.favorite_border),
-                      iconSize: 50,
-                      highlightColor: Colors.grey,
-                      color: Colors.black,
-                      onPressed: () => addtoWishlist()),
-                  IconButton(
+                  new IconButton(
+                    icon: Icon(Icons.favorite_border),
+                    iconSize: 50,
+                    color: Colors.white,
+                    onPressed: () {},
+                  ),
+                  new IconButton(
                     icon: Icon(Icons.chat_outlined),
-                    color: Colors.black,
+                    color: Colors.white,
                     iconSize: 50,
                     onPressed: () {},
                   ),
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.black,
                         padding: EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
                     onPressed: () =>
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context).push(new MaterialPageRoute(
                             builder: (context) => Checkout(
                                   product_name:
                                       widget.marketproduct['Product Name'],
