@@ -1,10 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
+import 'package:wefiwebu_2/model/user_model.dart';
 
 class LnfProductPage extends StatefulWidget {
   var lnfproduct;
   LnfProductPage(this.lnfproduct);
+
   @override
   State<LnfProductPage> createState() => _LnfProductPageState();
 }
@@ -53,50 +59,50 @@ class _LnfProductPageState extends State<LnfProductPage> {
         //   ),
         // )
         children: <Widget>[
-          new Container(
+          SizedBox(
             height: 300.0,
             child: GridTile(
-              child: Container(
-                color: Colors.white,
-                child: Image.asset("assets/images/avatar.png"),
-              ),
-              footer: new Container(
+              footer: Container(
                   color: Colors.white70,
                   child: ListTile(
-                    leading: new Text(
+                    leading: Text(
                       widget.lnfproduct['Prod name'],
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16.0),
                     ),
-                    title: new Row(
+                    title: Row(
                       children: <Widget>[
                         Expanded(
-                            child: new Text(
-                          "\RM${widget.lnfproduct['Reward price']}",
+                            child: Text(
+                          "RM${widget.lnfproduct['Reward price']}",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
                         )),
                       ],
                     ),
                   )),
+              child: Container(
+                color: Colors.white,
+                child: Image.asset("assets/images/avatar.png"),
+              ),
             ),
           ),
           Divider(),
-          new ListTile(
-            title: new Text("Product Details"),
+          ListTile(
+            title: Text("Product Details"),
             subtitle: Text(widget.lnfproduct['Prod description']),
           ),
           Divider(),
-          new ListTile(
-            title: new Text("Last Location"),
+          ListTile(
+            title: Text("Last Location"),
             subtitle: Text(widget.lnfproduct['Prod last location']),
           ),
           Divider(),
-          new Row(
+          Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
+                child: Text(
                   "Product name : ${widget.lnfproduct['Prod name']} ",
                   style: TextStyle(color: Colors.grey),
                 ),
@@ -109,15 +115,22 @@ class _LnfProductPageState extends State<LnfProductPage> {
           Container(
             color: Colors.pink,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                new IconButton(
-                  icon: Icon(Icons.favorite_border),
-                  iconSize: 50,
-                  color: Colors.white,
-                  onPressed: () {},
-                ),
-                new IconButton(
+                IconButton(
+                    icon: Icon(Icons.favorite_border),
+                    iconSize: 50,
+                    color: Colors.white,
+                    onPressed: () {}
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (context) {
+                    //       return AlertDialog(
+                    //         content: Text('Like Product'),
+                    //       );
+                    //     });
+                    ),
+                IconButton(
                   icon: Icon(Icons.chat_outlined),
                   color: Colors.white,
                   iconSize: 50,

@@ -23,8 +23,6 @@ class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
 
   @override
   Widget build(BuildContext context) {
-    final Storage mpStorage = Storage();
-
     return Scaffold(
       appBar: new AppBar(
         title: new Text("Add list Page"),
@@ -140,7 +138,7 @@ class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
                         "Product Description": MPdesc.text,
                         "Product Condition": MPcond.text,
                         "Product Brand": MPbrand.text,
-                        "Product Price": MPprice.text
+                        "Product Price": MPprice.text,
                       };
                       FirebaseFirestore.instance
                           .collection("marketplace")

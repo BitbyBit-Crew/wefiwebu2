@@ -13,6 +13,8 @@ import 'package:wefiwebu_2/model/marketplace_prod.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wefiwebu_2/screens/searchScreen_marketplace.dart';
 
+import 'favourite_screen.dart';
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -57,160 +59,154 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget image_carousel = new Container(
-      height: 200.0,
-      // child: new Carousel(
-      //   boxFit: BoxFit.cover,
-      //   images: [
-      //     AssetImage('assets/images/carousel1.jpg'),
-      //     AssetImage('assets/images/carousel2.jpg'),
-      //     AssetImage('assets/images/carousel3.jpg'),
-      //     AssetImage('assets/images/carousel4.jpg'),
-      //   ],
-      //   autoplay: true,
-      //   animationCurve: Curves.fastOutSlowIn,
-      //   animationDuration: Duration(milliseconds: 1000),
-      // ),
-    );
-
-    return Scaffold(
-      appBar: new AppBar(
-        elevation: 0.1,
-        backgroundColor: Colors.pink,
-        title: Text('Marketplace'),
-        actions: <Widget>[
-          new IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: () {}),
-          new IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-              ),
-              onPressed: () {})
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Column(
-                children: [
-                  TextFormField(
-                    readOnly: true,
-                    onTap: () => Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (_) => SearchScreenMarket())),
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        hintText: "Search items",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                  ),
-                ],
-              ),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Marketplace',
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.pinkAccent,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.favorite_border),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FavouriteScreen()));
+              },
             ),
-            // Container(
-            //   height: 30,
-            //   child: Row(
-            //     children: [
-            //       Text(
-            //         "Categories",
-            //         style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   height: 60,
-            //   child: Row(
-            //     children: [
-            //       CircleAvatar(
-            //         maxRadius: 45,
-            //         backgroundColor: Colors.lime,
-            //       )
-            //     ],
-            //   ),
-            // ),
-            SizedBox(
-              height: 15,
+            IconButton(
+              icon: Icon(Icons.notifications),
+              color: Colors.white,
+              onPressed: () {},
             ),
-            Expanded(
-                child: GridView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: marketProdList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, childAspectRatio: 1),
-                    itemBuilder: (_, index) {
-                      return GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    ProductDetails(marketProdList[index]))),
-                        child: Card(
-                          elevation: 3,
-                          child: Column(
-                            children: [
-                              AspectRatio(
-                                aspectRatio: 2,
-                                child: Container(
-                                  color: Colors.grey,
-                                  child: Image.asset(
-                                    "assets/images/avatar.png",
-                                    width: 80,
-                                    height: 80,
-                                  ),
-                                ),
-                              ),
-                              Text("${marketProdList[index]['Product Name']}"),
-                              // Text(
-                              //     "${marketProdList[index]['Product Description']}"),
-                              // Text(
-                              //     "${marketProdList[index]['Product Condition']}"),
-                              // Text("${marketProdList[index]['Product Brand']}"),
-                              Text(
-                                  "RM${marketProdList[index]['Product Price']}")
-                            ],
-                          ),
-                        ),
-                      );
-                    })),
           ],
         ),
+        body: Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      readOnly: true,
+                      onTap: () => Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (_) => SearchScreenMarket())),
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search),
+                          hintText: "Search items",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                    ),
+                  ],
+                ),
+              ),
+              // Container(
+              //   height: 30,
+              //   child: Row(
+              //     children: [
+              //       Text(
+              //         "Categories",
+              //         style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Container(
+              //   height: 60,
+              //   child: Row(
+              //     children: [
+              //       CircleAvatar(
+              //         maxRadius: 45,
+              //         backgroundColor: Colors.lime,
+              //       )
+              //     ],
+              //   ),
+              // ),
+              SizedBox(
+                height: 15,
+              ),
+              Expanded(
+                  child: GridView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: marketProdList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, childAspectRatio: 1),
+                      itemBuilder: (_, index) {
+                        return GestureDetector(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      ProductDetails(marketProdList[index]))),
+                          child: Card(
+                            elevation: 3,
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 2,
+                                  child: Container(
+                                    color: Colors.grey,
+                                    child: Image.asset(
+                                      "assets/images/avatar.png",
+                                      width: 80,
+                                      height: 80,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                    "${marketProdList[index]['Product Name']}"),
+                                Text(
+                                    "${marketProdList[index]['Product Description']}"),
+                                Text(
+                                    "${marketProdList[index]['Product Condition']}"),
+                                Text(
+                                    "${marketProdList[index]['Product Brand']}"),
+                                Text(
+                                    "RM${marketProdList[index]['Product Price']}")
+                              ],
+                            ),
+                          ),
+                        );
+                      })),
+            ],
+          ),
+        ),
+        floatingActionButton: SpeedDial(
+            icon: Icons.add,
+            backgroundColor: Colors.black,
+            children: [
+              SpeedDialChild(
+                child: const Icon(Icons.approval),
+                label: 'Sell a Product',
+                backgroundColor: Colors.grey,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Addmarketproduct_screen()),
+                  );
+                },
+              ),
+              SpeedDialChild(
+                child: const Icon(Icons.account_balance_wallet),
+                label: 'Sell',
+                backgroundColor: Colors.grey,
+                // onTap: () {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => Admin()),
+                //   );
+                // },
+              ),
+            ]),
       ),
-      floatingActionButton:
-          SpeedDial(icon: Icons.add, backgroundColor: Colors.black, children: [
-        SpeedDialChild(
-          child: const Icon(Icons.approval),
-          label: 'Sell a Product',
-          backgroundColor: Colors.grey,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Addmarketproduct_screen()),
-            );
-          },
-        ),
-        SpeedDialChild(
-          child: const Icon(Icons.account_balance_wallet),
-          label: 'Sell',
-          backgroundColor: Colors.grey,
-          // onTap: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => Admin()),
-          //   );
-          // },
-        ),
-      ]),
     );
   }
 }

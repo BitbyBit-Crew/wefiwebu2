@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:wefiwebu_2/screens/product_details.dart';
 
 class MarketProduct extends Equatable {
@@ -10,14 +11,14 @@ class MarketProduct extends Equatable {
   final String MPdesc;
   final String MPcond;
   final String MPbrand;
-  double MPprice;
+  final double MPprice;
 
   MarketProduct({
     required this.MPname,
     required this.MPdesc,
     required this.MPcond,
     required this.MPbrand,
-    this.MPprice = 0,
+    required this.MPprice,
   });
 
   Map<String, dynamic> toMap() {
