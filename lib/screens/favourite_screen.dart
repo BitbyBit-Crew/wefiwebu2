@@ -1,51 +1,46 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
-
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:wefiwebu_2/screens/home_screen.dart';
-import 'package:wefiwebu_2/components/horizontal.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wefiwebu_2/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wefiwebu_2/screens/product_details.dart';
-import 'package:wefiwebu_2/screens/addmarketproduct_screen.dart';
-import 'package:wefiwebu_2/model/marketplace_prod.dart';
+import 'package:wefiwebu_2/model/lostnfound_prod.dart';
+import 'package:wefiwebu_2/model/user_model.dart';
+import 'package:wefiwebu_2/screens/Manage_lostnfound.dart';
+import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
+import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
+import 'package:wefiwebu_2/screens/lostnfound_product_page.dart';
+import 'package:wefiwebu_2/screens/profile_screen.dart';
+import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
 import 'package:flutter/rendering.dart';
-import 'package:wefiwebu_2/screens/searchScreen_marketplace.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:wefiwebu_2/screens/searchScreen_lostnfound.dart';
 
-import 'favourite_screen.dart';
+import '../screens/lostnfound_product_page.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: HomeScreen(),
-  ));
-}
-
-class Marketplace_Screen extends StatefulWidget {
-  // Marketplace_Screen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<Marketplace_Screen> createState() => _Marketplace_ScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _Marketplace_ScreenState extends State<Marketplace_Screen> {
+class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
-  List marketProdList = [];
+  List lnfProdList = [];
 
-  fetchmarketProducts() async {
+  fetchlnfProducts() async {
     var _firestoreInstance = FirebaseFirestore.instance;
-    QuerySnapshot mp = await _firestoreInstance.collection("marketplace").get();
+    QuerySnapshot qn = await _firestoreInstance.collection("lostnfound").get();
     setState(() {
-      for (int i = 0; i < mp.docs.length; i++) {
-        marketProdList.add({
-          'Product Name': mp.docs[i]['Product Name'],
-          'Product Description': mp.docs[i]['Product Description'],
-          'Product Condition': mp.docs[i]['Product Condition'],
-          'Product Price': mp.docs[i]['Product Price'],
-          'Product Brand': mp.docs[i]['Product Brand'],
+      for (int i = 0; i < qn.docs.length; i++) {
+        lnfProdList.add({
+          'Prod name': qn.docs[i]['Prod name'],
+          'Prod description': qn.docs[i]['Prod description'],
+          'Prod last location': qn.docs[i]['Prod last location'],
+          'Reward price': qn.docs[i]['Reward price'],
         });
       }
     });
@@ -53,7 +48,7 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
 
   @override
   void initState() {
-    fetchmarketProducts();
+    fetchlnfProducts();
     super.initState();
   }
 
@@ -63,7 +58,7 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
         home: Scaffold(
       appBar: AppBar(
         title: Text(
-          'Marketplace',
+          'HomePage',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -72,10 +67,7 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
           IconButton(
             icon: Icon(Icons.favorite_border),
             color: Colors.white,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => FavouriteScreen()));
-            },
+            onPressed: () {},
           ),
           IconButton(
             icon: Icon(Icons.notifications),
@@ -85,7 +77,7 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: EdgeInsets.all(5),
         child: Column(
           children: [
             Container(
@@ -94,10 +86,8 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                 children: [
                   TextFormField(
                     readOnly: true,
-                    onTap: () => Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (_) => SearchScreenMarket())),
+                    onTap: () => Navigator.push(context,
+                        CupertinoPageRoute(builder: (_) => SearchScreen())),
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         hintText: "Search items",
@@ -107,10 +97,16 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                 ],
               ),
             ),
+
+            //list
+
+            SizedBox(
+              height: 15,
+            ),
             Expanded(
                 child: GridView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: marketProdList.length,
+                    itemCount: lnfProdList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, childAspectRatio: 1),
                     itemBuilder: (_, index) {
@@ -119,7 +115,7 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) =>
-                                    ProductDetails(marketProdList[index]))),
+                                    LnfProductPage(lnfProdList[index]))),
                         child: Card(
                           elevation: 3,
                           child: Column(
@@ -135,19 +131,16 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                                   ),
                                 ),
                               ),
-                              Text("${marketProdList[index]['Product Name']}"),
+                              Text("${lnfProdList[index]['Prod name']}"),
+                              // Text("${lnfProdList[index]['Prod description']}"),
                               Text(
-                                  "${marketProdList[index]['Product Description']}"),
-                              Text(
-                                  "${marketProdList[index]['Product Condition']}"),
-                              Text("${marketProdList[index]['Product Brand']}"),
-                              Text(
-                                  "RM${marketProdList[index]['Product Price']}")
+                                  "${lnfProdList[index]['Prod last location']}"),
+                              Text("RM${lnfProdList[index]['Reward price']}")
                             ],
                           ),
                         ),
                       );
-                    })),
+                    }))
           ],
         ),
       ),
@@ -155,26 +148,25 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
           SpeedDial(icon: Icons.add, backgroundColor: Colors.black, children: [
         SpeedDialChild(
           child: const Icon(Icons.approval),
-          label: 'Sell a Product',
+          label: 'Add Lost & Found',
           backgroundColor: Colors.grey,
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => Addmarketproduct_screen()),
+              MaterialPageRoute(builder: (context) => Addlostitem_screen()),
             );
           },
         ),
         SpeedDialChild(
           child: const Icon(Icons.account_balance_wallet),
-          label: 'Sell',
+          label: 'Manage Lost & Found',
           backgroundColor: Colors.grey,
-          // onTap: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => Admin()),
-          //   );
-          // },
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ManagelostnfoundScreen()),
+            );
+          },
         ),
       ]),
     ));
