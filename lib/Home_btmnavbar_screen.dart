@@ -8,6 +8,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
+import 'package:wefiwebu_2/screens/chat_screen.dart';
 import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/message_screen.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
@@ -27,7 +28,7 @@ class _HomeBtmNavbarState extends State<HomeBtmNavbar> {
   static final List<Widget> _screens = <Widget>[
     HomeScreen(),
     Marketplace_Screen(),
-    MessageScreen(),
+    ChatScreen(),
     ProfileScreen(),
   ];
   @override

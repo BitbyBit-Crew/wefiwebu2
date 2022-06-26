@@ -43,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(Icons.attach_file),
             iconSize: 25.0,
-            color: Theme.of(context).primaryColor,
+            color: Colors.pinkAccent,
             onPressed: () {},
           ),
           Expanded(
@@ -61,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(Icons.send),
             iconSize: 25.0,
-            color: Theme.of(context).primaryColor,
+            color: Colors.pinkAccent,
             onPressed: () {
               //StreamMessageInput();
             },
@@ -74,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      //backgroundColor: Colors.pinkAccent.shade400,
       appBar: AppBar(
         title: Text(
           'User',
@@ -83,6 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        backgroundColor: Colors.pinkAccent,
         elevation: 0.0,
         actions: <Widget>[
           IconButton(

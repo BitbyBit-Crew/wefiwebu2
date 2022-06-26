@@ -16,8 +16,14 @@ class _MessageScreenState extends State<MessageScreen> {
     return Scaffold(
       // ignore: unnecessary_new
       appBar: new AppBar(
-        title: new Text("Message Screen"),
-
+        title: Text(
+          'Messages',
+          style: TextStyle(
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.pinkAccent,
       ),
     
     );

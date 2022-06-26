@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:wefiwebu_2/screens/chat_screen.dart';
 import 'package:wefiwebu_2/screens/checkout_screen.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -134,7 +135,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                     icon: Icon(Icons.chat_outlined),
                     color: Colors.white,
                     iconSize: 50,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => ChatScreen()));
+                    },
                   ),
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(

@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
+import 'package:wefiwebu_2/screens/chat_screen.dart';
 
 class LnfProductPage extends StatefulWidget {
   var lnfproduct;
@@ -134,7 +135,10 @@ class _LnfProductPageState extends State<LnfProductPage> {
                   icon: Icon(Icons.chat_outlined),
                   color: Colors.white,
                   iconSize: 50,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => ChatScreen()));
+                  },
                 ),
               ],
             ),
