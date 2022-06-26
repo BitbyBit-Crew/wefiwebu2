@@ -53,11 +53,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       children: <Widget>[
                         Expanded(
                             child: new Text(
-<<<<<<< HEAD
-                          "\RM${widget.marketproduct['Product Price']}",
-=======
                           widget.marketproduct['Product Price'],
->>>>>>> parent of 9f46324 (add to wishlist added)
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
                         )),
@@ -104,20 +100,18 @@ class _ProductDetailsState extends State<ProductDetails> {
               )
             ],
           ),
-
           TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Message to the Seller. Pick Up point/time/etc..',
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Message to the Seller. Pick Up point/time/etc..',
+            ),
           ),
-        ),
           SizedBox(
             height: 40,
           ),
           Container(
             color: Colors.pink,
             child: Row(
-<<<<<<< HEAD
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   new IconButton(
@@ -152,41 +146,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                             color: Colors.white)),
                   ),
                 ]),
-=======
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new IconButton(
-                  icon: Icon(Icons.favorite_border),
-                  iconSize: 50,
-                  color: Colors.white,
-                  onPressed: () {},
-                ),
-                new IconButton(
-                  icon: Icon(Icons.chat_outlined),
-                  color: Colors.white,
-                  iconSize: 50,
-                  onPressed: () {},
-                ),
-                
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50))),
-                  onPressed: () => Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (context) => Checkout(
-                      product_name: widget.marketproduct['Product Name'],
-                      product_price: widget.marketproduct['Product Price'],
-                   ))),
-                  child: const Text("Buy Now",
-                  style: TextStyle(
-                  fontSize: 18,
-                  letterSpacing: 2.2,
-                  color: Colors.white)),
-                    ),
-              ]
-            ),
->>>>>>> parent of 9f46324 (add to wishlist added)
           ),
         ],
       ),
