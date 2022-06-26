@@ -118,7 +118,8 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => HomeScreen()));
           },
         ),
       ),
@@ -206,7 +207,9 @@ class _ProfileUpdateScreen extends State<ProfileUpdateScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20))),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ProfileScreen()));
                       },
                       child: const Text("CANCEL",
                           style: TextStyle(
