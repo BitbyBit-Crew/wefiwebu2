@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:wefiwebu_2/screens/checkout_screen.dart';
@@ -10,49 +12,57 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  Future addtoWishlist() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+
+    CollectionReference _wishlist =
+        FirebaseFirestore.instance.collection('user-wishlist');
+
+    return _wishlist.doc(currentUser!.uid).collection('product').doc().set({
+      'name': widget.marketproduct['Product Name'],
+      'brand': widget.marketproduct['Product Brand'],
+      'descrip': widget.marketproduct['Product Description'],
+      'condition': widget.marketproduct['Product Condition'],
+      'price': widget.marketproduct['Product Price'],
+    }).then((value) => showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('Like Product'),
+          );
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
+      appBar: AppBar(
         elevation: 0.1,
         backgroundColor: Colors.pink,
         title: Text('Marketplace'),
-        actions: <Widget>[
-          new IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: () {}),
-          new IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-              ),
-              onPressed: () {})
-        ],
       ),
-      body: new ListView(
+      body: ListView(
         children: <Widget>[
-          new Container(
+          Container(
             height: 300.0,
             child: GridTile(
               child: Container(
                 color: Colors.white,
                 child: Image.asset("assets/images/avatar.png"),
               ),
-              footer: new Container(
+              footer: Container(
                   color: Colors.white70,
                   child: ListTile(
-                    leading: new Text(
+                    leading: Text(
                       widget.marketproduct['Product Name'],
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16.0),
                     ),
-                    title: new Row(
+                    title: Row(
                       children: <Widget>[
                         Expanded(
-                            child: new Text(
+                            child: Text(
                           widget.marketproduct['Product Price'],
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
@@ -63,38 +73,38 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
           Divider(),
-          new ListTile(
-            title: new Text("Details"),
-            subtitle: new Text(widget.marketproduct['Product Description']),
+          ListTile(
+            title: Text("Details"),
+            subtitle: Text(widget.marketproduct['Product Description']),
           ),
           Divider(),
-          new Row(
+          Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
+                child: Text(
                   "Condition",
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: new Text(widget.marketproduct['Product Condition']),
+                child: Text(widget.marketproduct['Product Condition']),
               )
             ],
           ),
-          new Row(
+          Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
+                child: Text(
                   "Brand",
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
+                child: Text(
                   widget.marketproduct['Product Brand'],
                 ),
               )
@@ -110,29 +120,30 @@ class _ProductDetailsState extends State<ProductDetails> {
             height: 40,
           ),
           Container(
-            color: Colors.pink,
+            color: Colors.pinkAccent,
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  new IconButton(
-                    icon: Icon(Icons.favorite_border),
-                    iconSize: 50,
-                    color: Colors.white,
-                    onPressed: () {},
-                  ),
-                  new IconButton(
+                  IconButton(
+                      icon: Icon(Icons.favorite_border),
+                      iconSize: 50,
+                      highlightColor: Colors.grey,
+                      color: Colors.black,
+                      onPressed: () => addtoWishlist()),
+                  IconButton(
                     icon: Icon(Icons.chat_outlined),
-                    color: Colors.white,
+                    color: Colors.black,
                     iconSize: 50,
                     onPressed: () {},
                   ),
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.black,
                         padding: EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
                     onPressed: () =>
-                        Navigator.of(context).push(new MaterialPageRoute(
+                        Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => Checkout(
                                   product_name:
                                       widget.marketproduct['Product Name'],

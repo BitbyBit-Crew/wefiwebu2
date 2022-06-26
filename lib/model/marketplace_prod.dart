@@ -1,6 +1,6 @@
 import 'dart:convert';
 // import 'dart:html';
-
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:wefiwebu_2/screens/product_details.dart';

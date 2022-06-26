@@ -65,11 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.pinkAccent,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.favorite_border),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-          IconButton(
             icon: Icon(Icons.notifications),
             color: Colors.white,
             onPressed: () {},
