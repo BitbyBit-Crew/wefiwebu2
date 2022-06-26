@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:wefiwebu_2/screens/checkout_screen.dart';
@@ -12,58 +10,54 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  Future addtoWishlist() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    var currentUser = _auth.currentUser;
-
-    CollectionReference _wishlist =
-        FirebaseFirestore.instance.collection('user-wishlist');
-
-    return _wishlist.doc(currentUser!.uid).collection('product').doc().set({
-      'name': widget.marketproduct['Product Name'],
-      'brand': widget.marketproduct['Product Brand'],
-      'descrip': widget.marketproduct['Product Description'],
-      'condition': widget.marketproduct['Product Condition'],
-      'price': widget.marketproduct['Product Price'],
-    }).then((value) => showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text('Like Product'),
-          );
-        }));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: new AppBar(
         elevation: 0.1,
         backgroundColor: Colors.pink,
         title: Text('Marketplace'),
+        actions: <Widget>[
+          new IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {}),
+          new IconButton(
+              icon: Icon(
+                Icons.shopping_cart,
+                color: Colors.white,
+              ),
+              onPressed: () {})
+        ],
       ),
-      body: ListView(
+      body: new ListView(
         children: <Widget>[
-          Container(
+          new Container(
             height: 300.0,
             child: GridTile(
               child: Container(
                 color: Colors.white,
                 child: Image.asset("assets/images/avatar.png"),
               ),
-              footer: Container(
+              footer: new Container(
                   color: Colors.white70,
                   child: ListTile(
-                    leading: Text(
+                    leading: new Text(
                       widget.marketproduct['Product Name'],
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16.0),
                     ),
-                    title: Row(
+                    title: new Row(
                       children: <Widget>[
                         Expanded(
                             child: new Text(
+<<<<<<< HEAD
                           "\RM${widget.marketproduct['Product Price']}",
+=======
+                          widget.marketproduct['Product Price'],
+>>>>>>> parent of 9f46324 (add to wishlist added)
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
                         )),
@@ -73,55 +67,57 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
           Divider(),
-          ListTile(
-            title: Text("Details"),
-            subtitle: Text(widget.marketproduct['Product Description']),
+          new ListTile(
+            title: new Text("Details"),
+            subtitle: new Text(widget.marketproduct['Product Description']),
           ),
           Divider(),
-          Row(
+          new Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: Text(
+                child: new Text(
                   "Condition",
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: Text(widget.marketproduct['Product Condition']),
+                child: new Text(widget.marketproduct['Product Condition']),
               )
             ],
           ),
-          Row(
+          new Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: Text(
+                child: new Text(
                   "Brand",
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: Text(
+                child: new Text(
                   widget.marketproduct['Product Brand'],
                 ),
               )
             ],
           ),
+
           TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Message to the Seller. Pick Up point/time/etc..',
-            ),
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Message to the Seller. Pick Up point/time/etc..',
           ),
+        ),
           SizedBox(
             height: 40,
           ),
           Container(
-            color: Colors.pinkAccent.shade400,
+            color: Colors.pink,
             child: Row(
+<<<<<<< HEAD
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   new IconButton(
@@ -156,6 +152,41 @@ class _ProductDetailsState extends State<ProductDetails> {
                             color: Colors.white)),
                   ),
                 ]),
+=======
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new IconButton(
+                  icon: Icon(Icons.favorite_border),
+                  iconSize: 50,
+                  color: Colors.white,
+                  onPressed: () {},
+                ),
+                new IconButton(
+                  icon: Icon(Icons.chat_outlined),
+                  color: Colors.white,
+                  iconSize: 50,
+                  onPressed: () {},
+                ),
+                
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50))),
+                  onPressed: () => Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (context) => Checkout(
+                      product_name: widget.marketproduct['Product Name'],
+                      product_price: widget.marketproduct['Product Price'],
+                   ))),
+                  child: const Text("Buy Now",
+                  style: TextStyle(
+                  fontSize: 18,
+                  letterSpacing: 2.2,
+                  color: Colors.white)),
+                    ),
+              ]
+            ),
+>>>>>>> parent of 9f46324 (add to wishlist added)
           ),
         ],
       ),
