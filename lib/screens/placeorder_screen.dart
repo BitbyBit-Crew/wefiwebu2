@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
+import 'package:wefiwebu_2/screens/chat_screen.dart';
 
 class PlaceOrder extends StatefulWidget {
   @override
@@ -172,7 +173,9 @@ class _PlaceOrderState extends State<PlaceOrder> {
             MaterialButton(
               child: new Text("Yes"),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ChatScreen()));
               },
             ),
             MaterialButton(
