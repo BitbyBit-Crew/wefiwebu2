@@ -6,10 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wefiwebu_2/model/lostnfound_prod.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
-import 'package:wefiwebu_2/screens/Manage_lostnfound.dart';
 import 'package:wefiwebu_2/screens/Marketplace_screen.dart';
 import 'package:wefiwebu_2/screens/Addlostitem_screen.dart';
+import 'package:wefiwebu_2/screens/edit_lostnfoundprod.dart';
+import 'package:wefiwebu_2/screens/home_screen.dart';
 import 'package:wefiwebu_2/screens/lostnfound_product_page.dart';
+import 'package:wefiwebu_2/screens/product_details.dart';
 import 'package:wefiwebu_2/screens/profile_screen.dart';
 import 'package:wefiwebu_2/screens/profileupdate_screen.dart';
 import 'package:flutter/rendering.dart';
@@ -18,37 +20,16 @@ import 'package:wefiwebu_2/screens/searchScreen_lostnfound.dart';
 
 import '../screens/lostnfound_product_page.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class ManagemarketScreen extends StatefulWidget {
+  const ManagemarketScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ManagemarketScreen> createState() => _ManagemarketScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
-
-  // List lnfProdList = [];
-
-  // fetchlnfProducts() async {
-  //   var _firestoreInstance = FirebaseFirestore.instance;
-  //   QuerySnapshot qn = await _firestoreInstance.collection("lostnfound").get();
-  //   setState(() {
-  //     for (int i = 0; i < qn.docs.length; i++) {
-  //       lnfProdList.add({
-  //         'Prod name': qn.docs[i]['Prod name'],
-  //         'Prod description': qn.docs[i]['Prod description'],
-  //         'Prod last location': qn.docs[i]['Prod last location'],
-  //         'Reward price': qn.docs[i]['Reward price'],
-  //       });
-  //     }
-  //   });
-  // }
-
+class _ManagemarketScreenState extends State<ManagemarketScreen> {
   @override
   void initState() {
-    // fetchlnfProducts();
     super.initState();
   }
 
@@ -57,19 +38,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text(
-          'HomePage',
+          'Manage Your Sell Product',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.pinkAccent,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(5),
@@ -101,7 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
                 child: StreamBuilder(
               stream: FirebaseFirestore.instance
-                  .collectionGroup('lnf-items')
+                  .collection('user-marketprod')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .collection('market-items')
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -129,26 +114,65 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => LnfProductPage(dataSnap))),
+                                builder: (_) => ProductDetails(dataSnap))),
                         child: Card(
                           elevation: 3,
                           child: Column(
                             children: [
                               AspectRatio(
-                                aspectRatio: 2,
+                                aspectRatio: 2.5,
                                 child: Container(
                                   color: Colors.grey,
                                   child: Image.asset(
                                     "assets/images/avatar.png",
-                                    width: 80,
-                                    height: 80,
+                                    width: 60,
+                                    height: 60,
                                   ),
                                 ),
                               ),
-                              Text(dataSnap['Product name']),
-                              // Text("${lnfProdList[index]['Prod description']}"),
-                              Text(dataSnap['Product location']),
-                              Text("RM ${dataSnap['Reward price']}")
+                              Text(dataSnap['Product Name']),
+                              Text(dataSnap['Product Condition']),
+                              Text(dataSnap['Product Brand']),
+                              Text("RM${dataSnap['Product Price']}"),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.black,
+                                      child: Icon(Icons.edit),
+                                    ),
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                Editlostitem_screen(dataSnap))),
+                                  ),
+                                  GestureDetector(
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.black,
+                                        child:
+                                            Icon(Icons.delete_forever_sharp)),
+                                    onTap: () {
+                                      FirebaseFirestore.instance
+                                          .collection('user-marketprod')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .collection('market-items')
+                                          .doc(dataSnap.id)
+                                          .delete();
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: Text('Deleted'),
+                                            );
+                                          });
+                                    },
+                                  ),
+                                ],
+                              )
                             ],
                           ),
                         ),
@@ -169,17 +193,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Addlostitem_screen()),
-            );
-          },
-        ),
-        SpeedDialChild(
-          child: const Icon(Icons.account_balance_wallet),
-          label: 'Manage Lost & Found',
-          backgroundColor: Colors.grey,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ManagelostnfoundScreen()),
             );
           },
         ),

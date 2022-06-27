@@ -42,7 +42,7 @@ class _HomeBtmNavbarState extends State<HomeBtmNavbar> {
       bottomNavigationBar: Container(
         color: Colors.grey.shade400,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: GNav(
             tabBackgroundColor: Colors.grey.shade200,
             hoverColor: Colors.grey.shade100,
@@ -51,7 +51,7 @@ class _HomeBtmNavbarState extends State<HomeBtmNavbar> {
             activeColor: Colors.pinkAccent.shade400,
             duration: Duration(milliseconds: 300),
             backgroundColor: Colors.grey.shade400,
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(4),
             tabs: [
               GButton(
                 icon: Icons.home,

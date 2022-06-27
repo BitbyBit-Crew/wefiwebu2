@@ -41,7 +41,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       appBar: AppBar(
         elevation: 0.1,
         backgroundColor: Colors.pink,
-        title: Text('Marketplace'),
+        title: Text('Product Detail'),
       ),
       body: ListView(
         children: <Widget>[
@@ -64,7 +64,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                          widget.marketproduct['Product Price'],
+                          "RM${widget.marketproduct['Product Price']}",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
                         )),
@@ -137,7 +137,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     iconSize: 50,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => ChatScreen()));
+                          builder: (BuildContext context) => ChatScreen()));
                     },
                   ),
                   OutlinedButton(

@@ -1,3 +1,6 @@
+// ignore_for_file: unnecessary_new
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -18,16 +21,30 @@ class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
   TextEditingController MPcond = new TextEditingController();
   TextEditingController MPbrand = new TextEditingController();
   TextEditingController MPprice = new TextEditingController();
-  String marketproductId = DateTime.now().microsecondsSinceEpoch.toString();
-  bool upload = false;
 
   @override
   Widget build(BuildContext context) {
-    final Storage mpStorage = Storage();
+    Future addMarketprod() async {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      var currentuser = _auth.currentUser;
+      CollectionReference collectRef =
+          FirebaseFirestore.instance.collection('user-marketprod');
+      return collectRef
+          .doc(currentuser!.uid)
+          .collection('market-items')
+          .doc()
+          .set({
+        'Product Name': MPname.text,
+        'Product Description': MPdesc.text,
+        'Product Condition': MPcond.text,
+        'Product Brand': MPbrand.text,
+        'Product Price': double.parse(MPprice.text),
+      });
+    }
 
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("Add list Page"),
+        title: new Text("Add Product"),
         centerTitle: true,
         backgroundColor: Colors.pinkAccent,
       ),
@@ -135,16 +152,8 @@ class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
                     padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: () {
-                      Map<String, dynamic> data = {
-                        "Product Name": MPname.text,
-                        "Product Description": MPdesc.text,
-                        "Product Condition": MPcond.text,
-                        "Product Brand": MPbrand.text,
-                        "Product Price": MPprice.text
-                      };
-                      FirebaseFirestore.instance
-                          .collection("marketplace")
-                          .add(data);
+                      addMarketprod();
+
                       MPname.clear();
                       MPdesc.clear();
                       MPcond.clear();

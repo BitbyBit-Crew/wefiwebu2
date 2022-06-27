@@ -7,6 +7,7 @@ import 'package:wefiwebu_2/components/horizontal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wefiwebu_2/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wefiwebu_2/screens/manage_marketscreen.dart';
 import 'package:wefiwebu_2/screens/product_details.dart';
 import 'package:wefiwebu_2/screens/addmarketproduct_screen.dart';
 import 'package:wefiwebu_2/model/marketplace_prod.dart';
@@ -30,33 +31,6 @@ class Marketplace_Screen extends StatefulWidget {
 }
 
 class _Marketplace_ScreenState extends State<Marketplace_Screen> {
-  User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
-
-  List marketProdList = [];
-
-  fetchmarketProducts() async {
-    var _firestoreInstance = FirebaseFirestore.instance;
-    QuerySnapshot mp = await _firestoreInstance.collection("marketplace").get();
-    setState(() {
-      for (int i = 0; i < mp.docs.length; i++) {
-        marketProdList.add({
-          'Product Name': mp.docs[i]['Product Name'],
-          'Product Description': mp.docs[i]['Product Description'],
-          'Product Condition': mp.docs[i]['Product Condition'],
-          'Product Price': mp.docs[i]['Product Price'],
-          'Product Brand': mp.docs[i]['Product Brand'],
-        });
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    fetchmarketProducts();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -108,45 +82,64 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
               ),
             ),
             Expanded(
-                child: GridView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: marketProdList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, childAspectRatio: 1),
-                    itemBuilder: (_, index) {
-                      return GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    ProductDetails(marketProdList[index]))),
-                        child: Card(
-                          elevation: 3,
-                          child: Column(
-                            children: [
-                              AspectRatio(
-                                aspectRatio: 2,
-                                child: Container(
-                                  color: Colors.grey,
-                                  child: Image.asset(
-                                    "assets/images/avatar.png",
-                                    width: 80,
-                                    height: 80,
-                                  ),
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collectionGroup('market-items')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Something went Error '),
+                        );
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.data == null) {
+                        return Center(child: Text('No product found'));
+                      }
+                      return GridView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: snapshot.data!.docs.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2, childAspectRatio: 1),
+                          itemBuilder: (_, index) {
+                            DocumentSnapshot dataSnap =
+                                snapshot.data!.docs[index];
+                            return GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          ProductDetails(dataSnap))),
+                              child: Card(
+                                elevation: 3,
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 2,
+                                      child: Container(
+                                        color: Colors.grey,
+                                        child: Image.asset(
+                                          "assets/images/avatar.png",
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(dataSnap['Product Name']),
+                                    Text(dataSnap['Product Condition']),
+                                    Text(dataSnap['Product Brand']),
+                                    Text("RM${dataSnap['Product Price']}")
+                                  ],
                                 ),
                               ),
-                              Text("${marketProdList[index]['Product Name']}"),
-                              Text(
-                                  "${marketProdList[index]['Product Description']}"),
-                              Text(
-                                  "${marketProdList[index]['Product Condition']}"),
-                              Text("${marketProdList[index]['Product Brand']}"),
-                              Text(
-                                  "RM${marketProdList[index]['Product Price']}")
-                            ],
-                          ),
-                        ),
-                      );
+                            );
+                          });
                     })),
           ],
         ),
@@ -167,14 +160,14 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
         ),
         SpeedDialChild(
           child: const Icon(Icons.account_balance_wallet),
-          label: 'Sell',
+          label: 'Manage product',
           backgroundColor: Colors.grey,
-          // onTap: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => Admin()),
-          //   );
-          // },
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ManagemarketScreen()),
+            );
+          },
         ),
       ]),
     ));

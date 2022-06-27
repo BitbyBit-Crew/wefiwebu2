@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -12,16 +13,33 @@ class Addlostitem_screen extends StatefulWidget {
 }
 
 class _Addlostitem_screen extends State<Addlostitem_screen> {
-  TextEditingController Pname = new TextEditingController();
-  TextEditingController Pdescrip = new TextEditingController();
-  TextEditingController Plocat = new TextEditingController();
-  TextEditingController Prwrdprice = new TextEditingController();
+  TextEditingController Pname = TextEditingController();
+  TextEditingController Pdescrip = TextEditingController();
+  TextEditingController Plocat = TextEditingController();
+  TextEditingController Prwrdprice = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    Future addLnfprod() async {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      var currentuser = _auth.currentUser;
+      CollectionReference collectRef =
+          FirebaseFirestore.instance.collection('user-lostnfound');
+      return collectRef
+          .doc(currentuser!.uid)
+          .collection('lnf-items')
+          .doc()
+          .set({
+        'Product name': Pname.text,
+        'Product descrip': Pdescrip.text,
+        'Product location': Plocat.text,
+        'Reward price': double.parse(Prwrdprice.text),
+      });
+    }
+
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text("Add Lost or Found "),
+      appBar: AppBar(
+        title: Text("Add Lost or Found "),
         centerTitle: true,
         backgroundColor: Colors.pinkAccent,
       ),
@@ -116,14 +134,7 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
                     padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: () {
-                      final lnfprod = LostnfoundData(
-                          name: Pname.text,
-                          descrip: Pdescrip.text,
-                          lastlocation: Plocat.text,
-                          price: double.parse(Prwrdprice.text),
-                          owner: UserModel().uid.toString());
-
-                      addlnfprod(lnfprod);
+                      addLnfprod();
                       Pname.clear();
                       Pdescrip.clear();
                       Plocat.clear();

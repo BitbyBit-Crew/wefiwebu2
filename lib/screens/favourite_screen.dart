@@ -27,30 +27,6 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
-  List marketProdList = [];
-
-  fetchmarketProducts() async {
-    var _firestoreInstance = FirebaseFirestore.instance;
-    QuerySnapshot mp = await _firestoreInstance.collection("marketplace").get();
-    setState(() {
-      for (int i = 0; i < mp.docs.length; i++) {
-        marketProdList.add({
-          'Product Name': mp.docs[i]['Product Name'],
-          'Product Description': mp.docs[i]['Product Description'],
-          'Product Condition': mp.docs[i]['Product Condition'],
-          'Product Price': mp.docs[i]['Product Price'],
-          'Product Brand': mp.docs[i]['Product Brand'],
-        });
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    fetchmarketProducts();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -103,11 +79,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           DocumentSnapshot dataSnap =
                               snapshot.data!.docs[index];
                           return GestureDetector(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        ProductDetails(marketProdList[index]))),
+                            // onTap: () => Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (_) =>
+                            //             ProductDetails())),
                             child: Card(
                               elevation: 5,
                               color: Colors.grey.shade200,

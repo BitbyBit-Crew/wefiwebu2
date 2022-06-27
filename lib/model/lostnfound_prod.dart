@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class LostnfoundData {
   final String name;
-  String createdId;
+
   final String descrip;
   final String lastlocation;
   // final String imgUrl;
@@ -14,7 +14,6 @@ class LostnfoundData {
 
   LostnfoundData({
     required this.name,
-    this.createdId = '',
     required this.descrip,
     required this.lastlocation,
     // required this.imgUrl,
@@ -25,7 +24,6 @@ class LostnfoundData {
   });
 
   Map<String, dynamic> toJson() => {
-        'id': createdId,
         'Prod name': name,
         'Prod description': descrip,
         'Prod last location': lastlocation,
@@ -43,7 +41,7 @@ class LostnfoundData {
 
 Future addlnfprod(LostnfoundData lnfprod) async {
   final lnfdoc = FirebaseFirestore.instance.collection('lostnfound').doc();
-  lnfprod.createdId = lnfdoc.id;
+  // lnfprod.createdId = lnfdoc.id;
 
   final json = lnfprod.toJson();
   await lnfdoc.set(json);
@@ -51,7 +49,7 @@ Future addlnfprod(LostnfoundData lnfprod) async {
 
 Future updatelnfprod(LostnfoundData lnfprod) async {
   final updatelnf = FirebaseFirestore.instance.collection('lostnfound').doc();
-  lnfprod.createdId = updatelnf.id;
+  // lnfprod.createdId = updatelnf.id;
 
   final json = lnfprod.toJson();
   await updatelnf.set(json);

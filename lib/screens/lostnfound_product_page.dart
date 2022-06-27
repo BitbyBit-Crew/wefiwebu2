@@ -1,11 +1,8 @@
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:wefiwebu_2/model/user_model.dart';
 import 'package:wefiwebu_2/screens/chat_screen.dart';
-=======
->>>>>>> 112eee28db8a4888ba6af5245fc0d74ceda4845e
 
 class LnfProductPage extends StatefulWidget {
   var lnfproduct;
@@ -58,25 +55,25 @@ class _LnfProductPageState extends State<LnfProductPage> {
         //   ),
         // )
         children: <Widget>[
-          new Container(
+          Container(
             height: 300.0,
             child: GridTile(
               child: Container(
                 color: Colors.white,
                 child: Image.asset("assets/images/avatar.png"),
               ),
-              footer: new Container(
+              footer: Container(
                   color: Colors.white70,
                   child: ListTile(
-                    leading: new Text(
-                      widget.lnfproduct['Prod name'],
+                    leading: Text(
+                      widget.lnfproduct['Product name'],
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16.0),
                     ),
-                    title: new Row(
+                    title: Row(
                       children: <Widget>[
                         Expanded(
-                            child: new Text(
+                            child: Text(
                           "\RM${widget.lnfproduct['Reward price']}",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.red),
@@ -87,22 +84,22 @@ class _LnfProductPageState extends State<LnfProductPage> {
             ),
           ),
           Divider(),
-          new ListTile(
-            title: new Text("Product Details"),
-            subtitle: Text(widget.lnfproduct['Prod description']),
+          ListTile(
+            title: Text("Product Details"),
+            subtitle: Text(widget.lnfproduct['Product descrip']),
           ),
           Divider(),
-          new ListTile(
-            title: new Text("Last Location"),
-            subtitle: Text(widget.lnfproduct['Prod last location']),
+          ListTile(
+            title: Text("Last Location"),
+            subtitle: Text(widget.lnfproduct['Product location']),
           ),
           Divider(),
-          new Row(
+          Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                child: new Text(
-                  "Product name : ${widget.lnfproduct['Prod name']} ",
+                child: Text(
+                  "Product name : ${widget.lnfproduct['Product name']} ",
                   style: TextStyle(color: Colors.grey),
                 ),
               )
@@ -116,19 +113,19 @@ class _LnfProductPageState extends State<LnfProductPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new IconButton(
+                IconButton(
                   icon: Icon(Icons.favorite_border),
                   iconSize: 50,
                   color: Colors.white,
                   onPressed: () {},
                 ),
-                new IconButton(
+                IconButton(
                   icon: Icon(Icons.chat_outlined),
                   color: Colors.white,
                   iconSize: 50,
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => ChatScreen()));
+                        builder: (BuildContext context) => ChatScreen()));
                   },
                 ),
               ],

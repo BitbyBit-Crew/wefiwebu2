@@ -27,32 +27,8 @@ class ManagelostnfoundScreen extends StatefulWidget {
 }
 
 class _ManagelostnfoundScreenState extends State<ManagelostnfoundScreen> {
-  User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
-
-  List lnfProdList = [];
-
-  fetchlnfProducts() async {
-    var _firestoreInstance = FirebaseFirestore.instance;
-    QuerySnapshot qn = await _firestoreInstance
-        .collection("lostnfound")
-        .where('owner', isEqualTo: loggedInUser.uid.toString())
-        .get();
-    setState(() {
-      for (int i = 0; i < qn.docs.length; i++) {
-        lnfProdList.add({
-          'Prod name': qn.docs[i]['Prod name'],
-          'Prod description': qn.docs[i]['Prod description'],
-          'Prod last location': qn.docs[i]['Prod last location'],
-          'Reward price': qn.docs[i]['Reward price'],
-        });
-      }
-    });
-  }
-
   @override
   void initState() {
-    fetchlnfProducts();
     super.initState();
   }
 
@@ -67,8 +43,7 @@ class _ManagelostnfoundScreenState extends State<ManagelostnfoundScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => HomeScreen()));
+            Navigator.of(context).pop();
           },
         ),
         title: Text(
@@ -118,43 +93,97 @@ class _ManagelostnfoundScreenState extends State<ManagelostnfoundScreen> {
               height: 15,
             ),
             Expanded(
-                child: GridView.builder(
+                child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('user-lostnfound')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .collection('lnf-items')
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Something went Error '),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.data == null) {
+                  return Center(child: Text('No product found'));
+                }
+                return GridView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: lnfProdList.length,
+                    itemCount: snapshot.data!.docs.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, childAspectRatio: 1),
                     itemBuilder: (_, index) {
-                      return GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    Editlostitem_screen(lnfProdList[index]))),
-                        child: Card(
-                          elevation: 3,
-                          child: Column(
-                            children: [
-                              AspectRatio(
-                                aspectRatio: 2,
-                                child: Container(
-                                  color: Colors.grey,
-                                  child: Image.asset(
-                                    "assets/images/avatar.png",
-                                    width: 80,
-                                    height: 80,
-                                  ),
+                      DocumentSnapshot dataSnap = snapshot.data!.docs[index];
+                      return Card(
+                        elevation: 3,
+                        child: Column(
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 2,
+                              child: Container(
+                                color: Colors.grey,
+                                child: Image.asset(
+                                  "assets/images/avatar.png",
+                                  width: 80,
+                                  height: 80,
                                 ),
                               ),
-                              Text("${lnfProdList[index]['Prod name']}"),
-                              // Text("${lnfProdList[index]['Prod description']}"),
-                              Text(
-                                  "${lnfProdList[index]['Prod last location']}"),
-                              Text("RM${lnfProdList[index]['Reward price']}")
-                            ],
-                          ),
+                            ),
+                            Text(dataSnap['Product name']),
+                            // Text("${lnfProdList[index]['Prod description']}"),
+                            Text(dataSnap['Product location']),
+                            Text("RM ${dataSnap['Reward price']}"),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GestureDetector(
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.black,
+                                    child: Icon(Icons.edit),
+                                  ),
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              Editlostitem_screen(dataSnap))),
+                                ),
+                                GestureDetector(
+                                  child: CircleAvatar(
+                                      backgroundColor: Colors.black,
+                                      child: Icon(Icons.delete_forever_sharp)),
+                                  onTap: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user-lostnfound')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .collection('lnf-items')
+                                        .doc(dataSnap.id)
+                                        .delete();
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content: Text('Deleted'),
+                                          );
+                                        });
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       );
-                    }))
+                    });
+              },
+            ))
           ],
         ),
       ),

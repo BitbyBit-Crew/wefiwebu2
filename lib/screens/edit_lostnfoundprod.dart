@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -15,10 +16,10 @@ class Editlostitem_screen extends StatefulWidget {
 }
 
 class _Addlostitem_screen extends State<Editlostitem_screen> {
-  TextEditingController Pname = new TextEditingController();
-  TextEditingController Pdescrip = new TextEditingController();
-  TextEditingController Plocat = new TextEditingController();
-  TextEditingController Prwrdprice = new TextEditingController();
+  TextEditingController Pname = TextEditingController();
+  TextEditingController Pdescrip = TextEditingController();
+  TextEditingController Plocat = TextEditingController();
+  TextEditingController Prwrdprice = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class _Addlostitem_screen extends State<Editlostitem_screen> {
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.abc_sharp),
-                    labelText: "${widget.lnfproduct['Prod name']}",
+                    labelText: "${widget.lnfproduct['Product name']}",
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
@@ -61,7 +62,7 @@ class _Addlostitem_screen extends State<Editlostitem_screen> {
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.description),
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                    labelText: "${widget.lnfproduct['Prod description']}",
+                    labelText: "${widget.lnfproduct['Product descrip']}",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
               ),
@@ -73,7 +74,7 @@ class _Addlostitem_screen extends State<Editlostitem_screen> {
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.maps_home_work),
-                    labelText: "${widget.lnfproduct['Prod last location']}",
+                    labelText: "${widget.lnfproduct['Product location']}",
                     contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
@@ -128,22 +129,25 @@ class _Addlostitem_screen extends State<Editlostitem_screen> {
                     padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: () {
-                      // final prod = LostnfoundData(
-                      //     name: Pname.text,
-                      //     descrip: Pdescrip.text,
-                      //     lastlocation: Plocat.text,
-                      //     price: double.parse(Prwrdprice.text),
-                      //     owner: UserModel().uid.toString());
+                      FirebaseFirestore.instance
+                          .collection('user-marketprod')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection('market-items')
+                          .doc(widget.lnfproduct.id)
+                          .update({
+                        'Product name': Pname.text,
+                        'Product descrip': Pdescrip.text,
+                        'Product location': Plocat.text,
+                        'Reward price': double.parse(Prwrdprice.text),
+                      });
 
-                      // updatelnfprod(prod);
-
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (context) {
-                      //       return AlertDialog(
-                      //         content: Text('Product Updatted'),
-                      //       );
-                      //     });
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text('Product Updatted'),
+                            );
+                          });
                     },
                     child: Text(
                       "Update",
