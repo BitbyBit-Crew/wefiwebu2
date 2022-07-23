@@ -27,31 +27,35 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  # carousel_pro: ^1.0.0
   carousel_slider: ^4.1.1
   cloud_firestore: ^3.1.17
   cupertino_icons: ^1.0.2
+  dart_date: ^1.1.1
+  date: ^0.1.0
   dots_indicator: ^2.1.0
   equatable: ^2.0.0
   file_picker: ^4.0.3
   firebase_auth: ^3.3.17
   firebase_core: ^1.16.0
+  firebase_in_app_messaging: ^0.6.0+16
+  firebase_messaging: ^11.4.2
   firebase_storage: ^10.2.16
   flutter:
     sdk: flutter
+  flutter_chat_ui: ^1.5.8
+  flutter_local_notifications: ^9.7.0
   flutter_speed_dial: ^6.0.0
   flutter_typeahead: ^4.0.0
   fluttertoast: ^8.0.9
+  get: ^4.6.5
   google_nav_bar: ^5.0.6
   image_picker: ^0.8.5+3
+  intl: ^0.17.0
   line_icons: ^2.0.1
   provider: ^6.0.3
-  uuid: ^3.0.6
-  get: ^4.6.5
-  firebase_in_app_messaging: ^0.6.0+16
-  firebase_messaging: ^11.4.2
-  flutter_chat_ui: ^1.5.8
+  rxdart: ^0.27.5
   stream_chat_flutter: ^4.3.0
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_lints: ^2.0.0

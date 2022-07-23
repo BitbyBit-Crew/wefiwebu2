@@ -13,6 +13,7 @@ import 'package:wefiwebu_2/screens/addmarketproduct_screen.dart';
 import 'package:wefiwebu_2/model/marketplace_prod.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wefiwebu_2/screens/searchScreen_marketplace.dart';
+import 'package:wefiwebu_2/screens/Notification_screen.dart';
 
 import 'favourite_screen.dart';
 
@@ -54,7 +55,12 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
           IconButton(
             icon: Icon(Icons.notifications),
             color: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationScreen()));
+            },
           ),
         ],
       ),
@@ -131,10 +137,11 @@ class _Marketplace_ScreenState extends State<Marketplace_Screen> {
                                         ),
                                       ),
                                     ),
-                                    Text(dataSnap['Product Name']),
-                                    Text(dataSnap['Product Condition']),
-                                    Text(dataSnap['Product Brand']),
-                                    Text("RM${dataSnap['Product Price']}")
+                                    Text(dataSnap['Product Name'],
+                                        textAlign: TextAlign.center),
+                                    // Text(dataSnap['Product Condition']),
+                                    // Text(dataSnap['Product Brand']),
+                                    Text("\nRM${dataSnap['Product Price']}")
                                   ],
                                 ),
                               ),

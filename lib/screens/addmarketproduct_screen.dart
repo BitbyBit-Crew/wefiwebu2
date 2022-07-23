@@ -21,12 +21,14 @@ class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
   TextEditingController MPcond = new TextEditingController();
   TextEditingController MPbrand = new TextEditingController();
   TextEditingController MPprice = new TextEditingController();
+  TextEditingController MPNotif = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Future addMarketprod() async {
       final FirebaseAuth _auth = FirebaseAuth.instance;
       var currentuser = _auth.currentUser;
+
       CollectionReference collectRef =
           FirebaseFirestore.instance.collection('user-marketprod');
       return collectRef
@@ -39,6 +41,9 @@ class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
         'Product Condition': MPcond.text,
         'Product Brand': MPbrand.text,
         'Product Price': double.parse(MPprice.text),
+        'Notification':
+            "Your product was listed successfully in the marketplace",
+        'Date': FieldValue.serverTimestamp()
       });
     }
 
@@ -159,6 +164,7 @@ class _Addmarketproduct_screenState extends State<Addmarketproduct_screen> {
                       MPcond.clear();
                       MPbrand.clear();
                       MPprice.clear();
+
                       showDialog(
                           context: context,
                           builder: (context) {

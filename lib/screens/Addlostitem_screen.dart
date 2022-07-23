@@ -34,6 +34,8 @@ class _Addlostitem_screen extends State<Addlostitem_screen> {
         'Product descrip': Pdescrip.text,
         'Product location': Plocat.text,
         'Reward price': double.parse(Prwrdprice.text),
+        'Notification': "Your lost & found item was listed successfully",
+        'Date': FieldValue.serverTimestamp()
       });
     }
 
