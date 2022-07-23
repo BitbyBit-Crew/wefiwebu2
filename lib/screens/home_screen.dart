@@ -30,23 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
-  // List lnfProdList = [];
-
-  // fetchlnfProducts() async {
-  //   var _firestoreInstance = FirebaseFirestore.instance;
-  //   QuerySnapshot qn = await _firestoreInstance.collection("lostnfound").get();
-  //   setState(() {
-  //     for (int i = 0; i < qn.docs.length; i++) {
-  //       lnfProdList.add({
-  //         'Prod name': qn.docs[i]['Prod name'],
-  //         'Prod description': qn.docs[i]['Prod description'],
-  //         'Prod last location': qn.docs[i]['Prod last location'],
-  //         'Reward price': qn.docs[i]['Reward price'],
-  //       });
-  //     }
-  //   });
-  // }
-
   @override
   void initState() {
     // fetchlnfProducts();

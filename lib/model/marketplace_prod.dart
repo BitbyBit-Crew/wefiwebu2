@@ -6,17 +6,19 @@ import 'package:equatable/equatable.dart';
 import 'package:wefiwebu_2/screens/product_details.dart';
 
 class MarketProduct extends Equatable {
-  final String MPname;
-  final String MPdesc;
-  final String MPcond;
-  final String MPbrand;
-  double MPprice;
+  String? MPname;
+  String? MPdesc;
+  String? MPcond;
+  String? MPbrand;
+  String? url;
+  double? MPprice;
 
   MarketProduct({
-    required this.MPname,
-    required this.MPdesc,
-    required this.MPcond,
-    required this.MPbrand,
+    this.MPname,
+    this.MPdesc,
+    this.MPcond,
+    this.MPbrand,
+    this.url = "",
     this.MPprice = 0,
   });
 
@@ -27,6 +29,7 @@ class MarketProduct extends Equatable {
       'Product Condition': MPcond,
       'Product Brand': MPbrand,
       'Product Price': MPprice,
+      'URL': url,
     };
   }
 
@@ -60,7 +63,7 @@ class MarketProduct extends Equatable {
       MPdesc: snap['Product Description'],
       MPcond: snap['Product Condition'],
       MPbrand: snap['Product Brand'],
-      // imgUrl: snap['Prod image'],
+      url: snap['url'],
       MPprice: snap['Product Price'],
       // quantity: snap['quantity']
     );
